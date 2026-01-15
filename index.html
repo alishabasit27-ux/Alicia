@@ -2,185 +2,95 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alisha Studio | Digital World</title>
+    <title>Alisha | Character Studio</title>
     <style>
-        :root {
-            --bg: #fff5f7;
-            --window-bg: rgba(255, 255, 255, 0.85);
-            --accent: #ffb6c1;
-            --text: #7a5c5c;
+        :root { --peach: #ffdae0; --soft: #fff5f7; --text: #7a5c5c; }
+        body { 
+            background: var(--soft); 
+            background-image: radial-gradient(var(--peach) 1px, transparent 1px);
+            background-size: 25px 25px;
+            font-family: 'Outfit', sans-serif; color: var(--text);
+            margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center;
         }
 
-        body {
-            background-color: var(--bg);
-            background-image: linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px);
-            background-size: 40px 40px; /* Large aesthetic grid */
-            font-family: 'Outfit', 'Segoe UI', sans-serif;
-            color: var(--text);
-            margin: 0;
-            overflow-x: hidden;
-            cursor: url('https://cur.cursors-4u.net/symbols/sym-9/sym833.cur'), auto; /* Sparkle cursor */
+        /* Desktop Window Look */
+        .window {
+            background: white; border: 3px solid #7a5c5c; border-radius: 15px;
+            width: 100%; max-width: 500px; box-shadow: 10px 10px 0px var(--peach);
+            margin-bottom: 30px; overflow: hidden;
         }
+        .header { background: var(--peach); padding: 10px; border-bottom: 3px solid #7a5c5c; font-weight: bold; text-align: center; font-size: 0.8rem; }
 
-        /* Floating Hearts Animation */
-        .floating-emoji {
-            position: fixed;
-            font-size: 20px;
-            pointer-events: none;
-            z-index: -1;
-            animation: float 6s infinite ease-in-out;
-        }
+        /* Character Creator */
+        .creator-box { padding: 30px; text-align: center; }
+        .avatar-display { font-size: 80px; background: var(--soft); border-radius: 50%; width: 150px; height: 150px; line-height: 150px; margin: 0 auto 20px; border: 2px dashed var(--peach); }
+        .controls button { background: white; border: 2px solid var(--peach); padding: 8px 15px; border-radius: 10px; cursor: pointer; color: var(--text); font-weight: bold; margin: 5px; transition: 0.3s; }
+        .controls button:hover { background: var(--peach); color: white; }
+        
+        #visitor-name { border: 2px solid var(--peach); padding: 10px; border-radius: 10px; margin-top: 15px; width: 80%; outline: none; }
+        .join-btn { background: #ff8fa3 !important; color: white !important; margin-top: 15px !important; width: 85%; padding: 12px !important; }
 
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-        }
+        /* Community Gallery */
+        .gallery-title { font-size: 1.2rem; margin: 20px 0 10px; color: #ff8fa3; letter-spacing: 2px; }
+        .gallery-scroll { display: flex; gap: 15px; overflow-x: auto; width: 100%; max-width: 500px; padding: 10px; background: white; border: 2px solid var(--peach); border-radius: 15px; }
+        .participant { min-width: 80px; text-align: center; font-size: 0.7rem; }
+        .p-avatar { font-size: 30px; display: block; }
 
-        .main-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .desktop-window {
-            background: var(--window-bg);
-            backdrop-filter: blur(15px);
-            border: 3px solid white;
-            border-radius: 30px;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 20px 50px rgba(255, 182, 193, 0.4);
-            position: relative;
-            animation: slideIn 1s ease;
-        }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .title-bar {
-            background: white;
-            padding: 15px 25px;
-            border-bottom: 2px solid var(--bg);
-            border-radius: 30px 30px 0 0;
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-        }
-
-        .content { padding: 40px; text-align: center; }
-
-        .profile-pic {
-            width: 110px;
-            height: 110px;
-            border-radius: 40px; /* "Squircle" shape */
-            border: 5px solid white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            transition: 0.5s;
-        }
-
-        .profile-pic:hover { transform: rotate(10deg) scale(1.1); }
-
-        .bio { font-style: italic; margin: 20px 0; font-size: 0.95rem; }
-
-        /* The Mini Game Section */
-        .mini-game {
-            background: white;
-            border: 2px dashed var(--accent);
-            padding: 15px;
-            border-radius: 20px;
-            margin: 20px 0;
-        }
-
-        .sparkle-btn {
-            background: var(--accent);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .sparkle-btn:active { transform: scale(0.9); }
-
-        .links-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .link-card {
-            background: white;
-            padding: 15px;
-            border-radius: 20px;
-            text-decoration: none;
-            color: var(--text);
-            font-size: 0.85rem;
-            font-weight: 600;
-            border: 1px solid transparent;
-            transition: 0.3s;
-        }
-
-        .link-card:hover { border-color: var(--accent); color: var(--accent); }
-
+        /* Social Footer */
+        .footer-links { display: flex; gap: 15px; margin-top: 20px; }
+        .footer-btn { text-decoration: none; background: white; border: 2px solid #7a5c5c; padding: 12px 25px; border-radius: 50px; color: #7a5c5c; font-weight: bold; box-shadow: 4px 4px 0px var(--peach); transition: 0.2s; }
+        .footer-btn:hover { transform: translate(2px, 2px); box-shadow: 0px 0px 0px; }
     </style>
 </head>
 <body>
 
-    <script>
-        const emojis = ['🎀', '☁️', '🌸', '✨', '🍼'];
-        for (let i = 0; i < 15; i++) {
-            let div = document.createElement('div');
-            div.className = 'floating-emoji';
-            div.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-            div.style.left = Math.random() * 100 + 'vw';
-            div.style.animationDelay = Math.random() * 5 + 's';
-            div.style.opacity = Math.random();
-            document.body.appendChild(div);
-        }
-    </script>
-
-    <div class="main-container">
-        <div class="desktop-window">
-            <div class="title-bar">
-                <span>ALISHA_STUDIO.EXE</span>
-                <span>(^_^)</span>
+    <div class="window">
+        <div class="header">CHARACTER_CREATOR.EXE</div>
+        <div class="creator-box">
+            <div id="avatar" class="avatar-display">🌸</div>
+            <div class="controls">
+                <button onclick="changeStyle('prev')">←</button>
+                <button onclick="changeStyle('next')">→</button>
             </div>
-
-            <div class="content">
-                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alisha" class="profile-pic">
-                <h1>hi, i'm alisha 🌷</h1>
-                <p class="bio">18y/o Software Engineering Student. <br> Manifesting magic & clean code.</p>
-
-                <div class="mini-game">
-                    <p id="game-text" style="font-size: 0.8rem; margin-top:0;">Can you click the button 5 times?</p>
-                    <button class="sparkle-btn" onclick="playGame()">Click for Sparkles ✨</button>
-                    <p id="score" style="font-size: 0.7rem; margin-bottom:0;"></p>
-                </div>
-
-                <div class="links-grid">
-                    <a href="#" class="link-card">My Projects 💻</a>
-                    <a href="#" class="link-card">Pinterest Inspo 🎀</a>
-                    <a href="#" class="link-card">Tech Favorites 🎧</a>
-                    <a href="#" class="link-card">Let's Chat 💌</a>
-                </div>
-            </div>
+            <input type="text" id="visitor-name" placeholder="Name your character...">
+            <button class="join-btn" onclick="addToGallery()">Join the Community ✨</button>
         </div>
     </div>
 
+    <div class="gallery-title">💖 COMMUNITY GALLERY 💖</div>
+    <div class="gallery-scroll" id="gallery">
+        <div class="participant"><span class="p-avatar">🧸</span><span>Sample</span></div>
+        <div class="participant"><span class="p-avatar">🐱</span><span>Studio_Fan</span></div>
+    </div>
+
+    <div class="footer-links">
+        <a href="#" class="footer-btn">Follow Me 🎀</a>
+        <a href="#" class="footer-btn">Message 💌</a>
+    </div>
+
     <script>
-        let clicks = 0;
-        function playGame() {
-            clicks++;
-            document.getElementById('score').innerText = "Sparkles gathered: " + clicks;
-            if(clicks === 5) {
-                document.getElementById('game-text').innerText = "You unlocked the secret! 💖";
-                document.body.style.backgroundColor = "#ffe4e8";
-            }
+        const styles = ['🌸', '🐱', '🎀', '☁️', '🧸', '🍼', '🐰', '🍓', '🦋'];
+        let currentIndex = 0;
+
+        function changeStyle(dir) {
+            if(dir === 'next') currentIndex = (currentIndex + 1) % styles.length;
+            else currentIndex = (currentIndex - 1 + styles.length) % styles.length;
+            document.getElementById('avatar').innerText = styles[currentIndex];
+        }
+
+        function addToGallery() {
+            const name = document.getElementById('visitor-name').value;
+            const avatar = document.getElementById('avatar').innerText;
+            if(!name) { alert("Please give your character a name! ✨"); return; }
+            
+            const gallery = document.getElementById('gallery');
+            const newChar = document.createElement('div');
+            newChar.className = 'participant';
+            newChar.innerHTML = `<span class="p-avatar">${avatar}</span><span>${name}</span>`;
+            gallery.prepend(newChar);
+            
+            document.getElementById('visitor-name').value = '';
+            alert("Welcome to Alisha Studio, " + name + "! 🌷");
         }
     </script>
 </body>
