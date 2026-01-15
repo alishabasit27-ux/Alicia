@@ -1,126 +1,445 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alisha Studio | Character Creator</title>
+    <title>Alicia's Character Workshop ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --girl-bg: #fff5f7; --girl-accent: #ffb6c1;
-            --boy-bg: #f0f7ff; --boy-accent: #b6d4ff;
-            --main-bg: var(--girl-bg); --main-accent: var(--girl-accent);
+            /* Default Girl Vibe Theme */
+            --theme-color: #ff8fa3; /* Pink */
+            --theme-soft: #fff0f3;
+            --bg-grid: rgba(255, 182, 193, 0.3);
+            --text-main: #7a5c5c;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        /* The Boy Vibe Theme (applied via JS) */
+        body.boy-mode {
+            --theme-color: #89CFF0; /* Baby Blue */
+            --theme-soft: #f0f8ff;
+            --bg-grid: rgba(137, 207, 240, 0.3);
+            --text-main: #4a5c7a;
         }
 
         body {
-            background-color: var(--main-bg);
-            transition: 0.5s;
+            margin: 0;
             font-family: 'Outfit', sans-serif;
-            display: flex; flex-direction: column; align-items: center; padding: 20px;
+            background-color: var(--theme-soft);
+            /* Creating the grid background from reference images */
+            background-image: 
+                linear-gradient(var(--bg-grid) 2px, transparent 2px),
+                linear-gradient(90deg, var(--bg-grid) 2px, transparent 2px);
+            background-size: 40px 40px;
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
         }
 
-        /* Top Portfolio Intro */
-        .intro-header {
-            background: white; border: 2px solid var(--main-accent);
-            padding: 15px; border-radius: 20px; width: 90%; max-width: 500px;
-            text-align: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        /* General Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
 
-        /* Character Canvas */
-        .creator-card {
-            background: white; width: 90%; max-width: 500px;
-            border-radius: 30px; border: 3px solid white;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .preview-area {
-            height: 250px; background: var(--main-bg);
-            display: flex; justify-content: center; align-items: center;
-            font-size: 80px; position: relative;
+        /* ================= HEADER INTRO ================= */
+        .header-intro {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            border: 3px solid white;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            animation: float 6s ease-in-out infinite;
         }
 
-        .floating-sparkle {
-            position: absolute; animation: float 3s infinite ease-in-out;
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--theme-color);
+            padding: 5px;
+            background: white;
         }
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        .controls { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-        .btn {
-            background: var(--main-bg); border: 2px solid var(--main-accent);
-            padding: 10px; border-radius: 15px; cursor: pointer; font-weight: bold;
-            color: #7a5c5c; transition: 0.3s;
+        .intro-text h1 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--theme-color);
+            margin: 0;
+            font-size: 2.2rem;
         }
 
-        .btn:hover { background: var(--main-accent); color: white; }
-
-        .character-line-box {
-            margin: 15px; padding: 10px; border: 1px dashed var(--main-accent);
-            border-radius: 10px; font-style: italic; font-size: 0.8rem;
+        .intro-subtitle {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: inline-block;
+            background: var(--theme-soft);
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: var(--theme-color);
         }
 
-        .footer-tag { margin-top: 20px; font-size: 0.7rem; opacity: 0.6; }
+        /* ================= CHARACTER CREATOR ================= */
+        .creator-section {
+            background: var(--glass-bg);
+            border-radius: 30px;
+            border: 3px solid white;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+            color: var(--theme-color);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        /* Gender Toggle */
+        .gender-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 10px;
+            border-radius: 50px;
+            width: fit-content;
+            margin: 0 auto 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .gender-btn {
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            background: transparent;
+            color: #aaa;
+        }
+
+        .gender-btn.active {
+            background: var(--theme-color);
+            color: white;
+            box-shadow: 0 4px 15px var(--bg-grid);
+        }
+
+        /* Interface Layout */
+        .creator-interface {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        /* The Character Canvas */
+        .character-canvas {
+            flex: 1;
+            background: white;
+            border-radius: 25px;
+            border: 3px dashed var(--theme-color);
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character-preview {
+            height: 90%;
+            /* Floating effect for the character */
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Controls */
+        .controls-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .categories-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 2px solid var(--theme-soft);
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-main);
+            transition: 0.3s;
+        }
+
+        .tab-btn:hover, .tab-btn.selected {
+            background: var(--theme-soft);
+            border-color: var(--theme-color);
+            color: var(--theme-color);
+        }
+
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            height: 150px;
+            overflow-y: auto;
+        }
+
+        .asset-placeholder {
+            aspect-ratio: 1;
+            background: var(--theme-soft);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .asset-placeholder:hover { border-color: var(--theme-color); }
+
+        .cool-line-input {
+            width: 90%;
+            padding: 15px;
+            border-radius: 20px;
+            border: 2px solid var(--theme-color);
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            text-align: center;
+        }
+
+        .save-btn {
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 20px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 20px var(--bg-grid);
+        }
+        .save-btn:hover { transform: translateY(-3px); }
+
+        /* ================= COMMUNITY GALLERY ================= */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-card {
+            background: white;
+            padding: 15px;
+            border-radius: 25px;
+            text-align: center;
+            border: 3px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+        .gallery-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--theme-color);
+        }
+
+        .gallery-img {
+            width: 100%;
+            border-radius: 20px;
+            background: var(--theme-soft);
+            margin-bottom: 10px;
+        }
+
+        .gallery-line {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--theme-color);
+            font-weight: 600;
+        }
+
+        /* ================= DYNAMIC FOOTER ================= */
+        .dynamic-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            background: var(--glass-bg);
+            border-radius: 30px 30px 0 0;
+            border-top: 3px solid white;
+        }
+
+        .cta-message {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            color: var(--theme-color);
+            margin-bottom: 20px;
+            transition: color 0.5s ease;
+        }
+
+        .follow-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: var(--theme-color);
+            color: white;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .follow-btn:hover { transform: scale(1.05); box-shadow: 0 10px 20px var(--bg-grid); }
+
+        .signature {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .header-intro, .creator-interface { flex-direction: column; text-align: center; }
+            .character-canvas { height: 300px; width: 100%; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="intro-header">
-        <h3 style="margin:0; color:var(--main-accent)">hi, i'm alisha 🌷</h3>
-        <p style="font-size:0.8rem; margin:5px 0;">18y/o Software Engineering Student @ VU. Let's create together!</p>
-    </div>
+    <div class="container">
+        <header class="header-intro">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alicia&style=circle&topType=LongHairMiaWallace&hairColor=Blonde&clotheType=BlazerShirt&eyeType=Happy" class="profile-avatar" alt="Alicia">
+            <div class="intro-text">
+                <span class="intro-subtitle">Digital Artist & Dev</span>
+                <h1>Welcome to my Workshop! ✨</h1>
+                <p>Hi, I'm Alicia. I love combining soft anime aesthetics with interactive code. I built this space for you to express yourself. Create your character and join our cute community!</p>
+            </div>
+        </header>
 
-    <div class="creator-card">
-        <div class="preview-area" id="char-preview">
-            <span id="anime-char">👩🏻‍🎨</span>
-            <div class="floating-sparkle" style="top:20px; right:40px;">✨</div>
-        </div>
+        <section class="creator-section">
+            <h2 class="section-title">🎀 Create Your Anime Self 🎮</h2>
+            
+            <div class="gender-toggle">
+                <button class="gender-btn active" id="btn-girl" onclick="setGender('girl')">Girl Style 🌸</button>
+                <button class="gender-btn" id="btn-boy" onclick="setGender('boy')">Boy Style 🧢</button>
+            </div>
 
-        <div class="controls">
-            <button class="btn" onclick="setGender('girl')">Girl Style 🎀</button>
-            <button class="btn" onclick="setGender('boy')">Boy Style 🧢</button>
-            <button class="btn" onclick="changeHair()">Change Hair</button>
-            <button class="btn" onclick="changeOutfit()">Change Outfit</button>
-        </div>
+            <div class="creator-interface">
+                <div class="character-canvas">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Kiki&topType=LongHairCurvy&accessoriesType=Prescription02&clotheType=Overall" class="character-preview" id="main-preview" alt="Character Preview">
+                </div>
 
-        <div class="character-line-box">
-            "Looking aesthetic today! ✨"
-        </div>
+                <div class="controls-panel">
+                    <div class="categories-tabs">
+                        <div class="tab-btn selected">Hair</div>
+                        <div class="tab-btn">Outfit</div>
+                        <div class="tab-btn">Eyes</div>
+                        <div class="tab-btn">Accessories</div>
+                    </div>
+                    
+                    <div class="assets-grid">
+                        <div class="asset-placeholder" style="background-color: #ffdae0;"></div>
+                        <div class="asset-placeholder" style="background-color: #ffe4e1;"></div>
+                        <div class="asset-placeholder" style="background-color: #fff0f5;"></div>
+                        <div class="asset-placeholder" style="background-color: #e6e6fa;"></div>
+                        </div>
+
+                    <input type="text" class="cool-line-input" placeholder="Enter your cool character line... ✨">
+                    <button class="save-btn">✨ Save to Community Gallery</button>
+                </div>
+            </div>
+        </section>
+
+        <section>
+             <h2 class="section-title" style="font-size: 1.4rem;">💖 Community Creations (No IDs!)</h2>
+             <div class="gallery-grid">
+                <div class="gallery-card">
+                     <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Luna&topType=LongHairStraight2&hairColor=Pink" class="gallery-img">
+                     <div class="gallery-line">"Living in a pastel dream."</div>
+                 </div>
+                 <div class="gallery-card">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&topType=ShortHairDreads01&hairColor=BrownDark&clotheType=Hoodie" class="gallery-img">
+                    <div class="gallery-line">"AFK, touching grass."</div>
+                </div>
+                <div class="gallery-card">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mia&topType=LongHairBun&accessoriesType=Round" class="gallery-img">
+                    <div class="gallery-line">"Coffee & Coding."</div>
+                </div>
+                <div class="gallery-card">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Leo&topType=ShortHairShortCurly&clotheType=GraphicShirt" class="gallery-img">
+                    <div class="gallery-line">"Leveling up daily."</div>
+                </div>
+             </div>
+        </section>
+
+    </div> <footer class="dynamic-footer">
+        <h2 class="cta-message" id="dynamic-cta">Let's be mutuals! 🎀</h2>
+        <a href="#" class="follow-btn">Follow Alicia on Insta</a>
         
-        <div style="text-align:center; padding-bottom:20px;">
-            <a href="#" style="color:var(--main-accent); font-weight:bold; text-decoration:none;">Follow Me ☁️</a>
+        <div class="signature">
+            created with love by Alicia 💖
         </div>
-    </div>
+    </footer>
 
-    <div class="footer-tag">created with love by alisha</div>
 
     <script>
-        let currentGender = 'girl';
-        const girls = ['👩🏻‍🎨', '👩🏼‍🎤', '👩🏻‍💻', '👸🏻', '🧚🏻‍♀️'];
-        const boys = ['🧑🏻‍🎨', '🧑🏼‍🚀', '🧑🏻‍💻', '🤴🏻', '🥷🏻'];
+        function setGender(gender) {
+            const body = document.body;
+            const btnGirl = document.getElementById('btn-girl');
+            const btnBoy = document.getElementById('btn-boy');
+            const previewImg = document.getElementById('main-preview');
+            const ctaText = document.getElementById('dynamic-cta');
 
-        function setGender(type) {
-            currentGender = type;
-            const root = document.documentElement;
-            if(type === 'girl') {
-                root.style.setProperty('--main-bg', '#fff5f7');
-                root.style.setProperty('--main-accent', '#ffb6c1');
-                document.getElementById('anime-char').innerText = '👩🏻‍🎨';
-            } else {
-                root.style.setProperty('--main-bg', '#f0f7ff');
-                root.style.setProperty('--main-accent', '#b6d4ff');
-                document.getElementById('anime-char').innerText = '🧑🏻‍🎨';
+            if (gender === 'girl') {
+                // 1. Change Theme Colors
+                body.classList.remove('boy-mode');
+                
+                // 2. Update Buttons
+                btnGirl.classList.add('active');
+                btnBoy.classList.remove('active');
+                
+                // 3. Change Preview Image (Simulated change)
+                previewImg.src = "https://api.dicebear.com/7.x/avataaars/svg?seed=Kiki&topType=LongHairCurvy&accessoriesType=Prescription02&clotheType=Overall";
+                
+                // 4. Update Footer Message (Pink & Cute)
+                ctaText.textContent = "Let's be mutuals! 🎀";
+                ctaText.style.color = "var(--theme-color)";
+
+            } else if (gender === 'boy') {
+                // 1. Change Theme Colors
+                body.classList.add('boy-mode');
+                 
+                // 2. Update Buttons
+                btnBoy.classList.add('active');
+                btnGirl.classList.remove('active');
+
+                // 3. Change Preview Image (Simulated change)
+                previewImg.src = "https://api.dicebear.com/7.x/avataaars/svg?seed=Kai&topType=ShortHairFrizzle&clotheType=Hoodie&accessoriesType=Wayfarers";
+
+                // 4. Update Footer Message (Blue & Cool)
+                ctaText.textContent = "Join the crew. 🎮";
+                //We need to hardcode the blue here because the CSS variable takes a moment to switch
+                ctaText.style.color = "#89CFF0"; 
             }
         }
-
-        function changeHair() {
-            const list = currentGender === 'girl' ? girls : boys;
-            const randomChar = list[Math.floor(Math.random() * list.length)];
-            document.getElementById('anime-char').innerText = randomChar;
-        }
-
-        function changeOutfit() {
-            // This can be expanded to change specific overlay images
-            alert("Outfit changed! ✨ (You can add real images here next!)");
-        }
     </script>
+
 </body>
 </html>
