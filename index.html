@@ -1,150 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alisha | Portfolio</title>
+    <title>Alisha Studio | Digital World</title>
     <style>
+        :root {
+            --bg: #fff5f7;
+            --window-bg: rgba(255, 255, 255, 0.85);
+            --accent: #ffb6c1;
+            --text: #7a5c5c;
+        }
+
         body {
-            background-color: #fff5f7;
-            background-image: radial-gradient(#ffdae0 1.5px, transparent 1.5px);
-            background-size: 30px 30px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            background-image: linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+            background-size: 40px 40px; /* Large aesthetic grid */
+            font-family: 'Outfit', 'Segoe UI', sans-serif;
+            color: var(--text);
+            margin: 0;
+            overflow-x: hidden;
+            cursor: url('https://cur.cursors-4u.net/symbols/sym-9/sym833.cur'), auto; /* Sparkle cursor */
+        }
+
+        /* Floating Hearts Animation */
+        .floating-emoji {
+            position: fixed;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: -1;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .main-container {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            color: #7a5c5c;
+            padding: 20px;
         }
 
-        .window {
-            width: 90%;
+        .desktop-window {
+            background: var(--window-bg);
+            backdrop-filter: blur(15px);
+            border: 3px solid white;
+            border-radius: 30px;
+            width: 100%;
             max-width: 450px;
-            background: white;
-            border: 2px solid #ffdae0;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.3);
-            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(255, 182, 193, 0.4);
+            position: relative;
+            animation: slideIn 1s ease;
         }
 
-        .window-header {
-            background: #fffafa;
-            padding: 12px 20px;
-            border-bottom: 1px solid #ffdae0;
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .title-bar {
+            background: white;
+            padding: 15px 25px;
+            border-bottom: 2px solid var(--bg);
+            border-radius: 30px 30px 0 0;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
         }
 
-        .dots { display: flex; gap: 8px; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; background: #ffdae0; }
-
-        .content { padding: 40px 30px; text-align: center; }
-
-        /* Icon Picture Styling */
-        .profile-wrapper {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
-            position: relative;
-        }
+        .content { padding: 40px; text-align: center; }
 
         .profile-pic {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #fff;
-            box-shadow: 0 5px 15px rgba(255, 182, 193, 0.4);
+            width: 110px;
+            height: 110px;
+            border-radius: 40px; /* "Squircle" shape */
+            border: 5px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: 0.5s;
         }
 
-        .sparkle-decor {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            font-size: 1.5rem;
-        }
+        .profile-pic:hover { transform: rotate(10deg) scale(1.1); }
 
-        h1 { font-size: 1.6rem; margin: 10px 0; letter-spacing: 1px; color: #ff8fa3; }
-        
-        /* Intro Section */
-        .intro { font-size: 0.9rem; line-height: 1.6; margin-bottom: 25px; opacity: 0.9; }
+        .bio { font-style: italic; margin: 20px 0; font-size: 0.95rem; }
 
-        /* Aesthetic Info Lines */
-        .aesthetic-lines {
-            background: #fff5f7;
+        /* The Mini Game Section */
+        .mini-game {
+            background: white;
+            border: 2px dashed var(--accent);
             padding: 15px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-bottom: 25px;
-            text-align: left;
+            border-radius: 20px;
+            margin: 20px 0;
         }
 
-        .line { margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .sparkle-btn {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
 
-        .bento-links {
+        .sparkle-btn:active { transform: scale(0.9); }
+
+        .links-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 15px;
         }
 
-        .bento-item {
+        .link-card {
             background: white;
-            border: 1px solid #ffdae0;
             padding: 15px;
-            border-radius: 15px;
+            border-radius: 20px;
             text-decoration: none;
-            color: #7a5c5c;
+            color: var(--text);
             font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: 0.3s;
         }
 
-        .bento-item:hover {
-            background: #fffafa;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 182, 193, 0.2);
-        }
+        .link-card:hover { border-color: var(--accent); color: var(--accent); }
+
     </style>
 </head>
 <body>
 
-    <div class="window">
-        <div class="window-header">
-            <div class="dots">
-                <div class="dot" style="background: #ffb6c1;"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-            <span style="font-size: 0.7rem; font-weight: bold; opacity: 0.5;">ALISHA.netroalix</span>
-        </div>
+    <script>
+        const emojis = ['🎀', '☁️', '🌸', '✨', '🍼'];
+        for (let i = 0; i < 15; i++) {
+            let div = document.createElement('div');
+            div.className = 'floating-emoji';
+            div.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            div.style.left = Math.random() * 100 + 'vw';
+            div.style.animationDelay = Math.random() * 5 + 's';
+            div.style.opacity = Math.random();
+            document.body.appendChild(div);
+        }
+    </script>
 
-        <div class="content">
-            <div class="profile-wrapper">
-                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alisha" class="profile-pic" alt="Alicia">
-                <div class="sparkle-decor">✨</div>
-            </div>
-
-            <h1>hi, i'm alisha</h1>
-            <p class="intro">
-                Software Engineering student with a love for soft aesthetics and digital creation. Currently building my corner of the internet.
-            </p>
-
-            <div class="aesthetic-lines">
-                <div class="line">☁️ <b>status:</b> manifesting big things</div>
-                <div class="line">🎧 <b>listening:</b> lofi beats</div>
-                <div class="line">💻 <b>coding:</b> my first website</div>
+    <div class="main-container">
+        <div class="desktop-window">
+            <div class="title-bar">
+                <span>ALISHA_STUDIO.EXE</span>
+                <span>(^_^)</span>
             </div>
 
-            <div class="bento-links">
-                <a href="#" class="bento-item">Projects 🎀</a>
-                <a href="#" class="bento-item">Services 🌷</a>
-                <a href="#" class="bento-item">Pinterest ☁️</a>
-                <a href="#" class="bento-item">Contact 💌</a>
+            <div class="content">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alisha" class="profile-pic">
+                <h1>hi, i'm alisha 🌷</h1>
+                <p class="bio">18y/o Software Engineering Student. <br> Manifesting magic & clean code.</p>
+
+                <div class="mini-game">
+                    <p id="game-text" style="font-size: 0.8rem; margin-top:0;">Can you click the button 5 times?</p>
+                    <button class="sparkle-btn" onclick="playGame()">Click for Sparkles ✨</button>
+                    <p id="score" style="font-size: 0.7rem; margin-bottom:0;"></p>
+                </div>
+
+                <div class="links-grid">
+                    <a href="#" class="link-card">My Projects 💻</a>
+                    <a href="#" class="link-card">Pinterest Inspo 🎀</a>
+                    <a href="#" class="link-card">Tech Favorites 🎧</a>
+                    <a href="#" class="link-card">Let's Chat 💌</a>
+                </div>
             </div>
         </div>
     </div>
 
+    <script>
+        let clicks = 0;
+        function playGame() {
+            clicks++;
+            document.getElementById('score').innerText = "Sparkles gathered: " + clicks;
+            if(clicks === 5) {
+                document.getElementById('game-text').innerText = "You unlocked the secret! 💖";
+                document.body.style.backgroundColor = "#ffe4e8";
+            }
+        }
+    </script>
 </body>
 </html>
