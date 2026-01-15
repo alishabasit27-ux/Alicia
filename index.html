@@ -1,113 +1,147 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alisha Studio | Desktop</title>
+    <title>Alisha | Portfolio</title>
     <style>
         body {
-            background-color: #fce4ec;
-            background-image: radial-gradient(#f8bbd0 1px, transparent 1px);
-            background-size: 25px 25px; /* Grid background like your image */
-            font-family: 'Courier New', Courier, monospace;
+            background-color: #fff5f7;
+            background-image: radial-gradient(#ffdae0 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            color: #7a5c5c;
         }
 
-        /* The "Computer Window" */
         .window {
             width: 90%;
-            max-width: 500px;
+            max-width: 450px;
             background: white;
-            border: 3px solid #7a5c5c;
-            box-shadow: 8px 8px 0px #ffc1cc;
-            border-radius: 10px;
+            border: 2px solid #ffdae0;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.3);
             overflow: hidden;
         }
 
-        .window-bar {
-            background: #ffc1cc;
-            padding: 10px;
-            border-bottom: 3px solid #7a5c5c;
+        .window-header {
+            background: #fffafa;
+            padding: 12px 20px;
+            border-bottom: 1px solid #ffdae0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .dots { display: flex; gap: 5px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #7a5c5c; }
+        .dots { display: flex; gap: 8px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #ffdae0; }
 
-        .content {
-            padding: 30px;
-            text-align: center;
-        }
+        .content { padding: 40px 30px; text-align: center; }
 
-        .profile-area img {
+        /* Icon Picture Styling */
+        .profile-wrapper {
             width: 120px;
             height: 120px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            border: 3px solid #ffc1cc;
-            margin-bottom: 15px;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 5px 15px rgba(255, 182, 193, 0.4);
         }
 
-        .title {
+        .sparkle-decor {
+            position: absolute;
+            top: -10px;
+            right: -10px;
             font-size: 1.5rem;
-            color: #ff8fa3;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: bold;
         }
 
-        .bento-grid {
+        h1 { font-size: 1.6rem; margin: 10px 0; letter-spacing: 1px; color: #ff8fa3; }
+        
+        /* Intro Section */
+        .intro { font-size: 0.9rem; line-height: 1.6; margin-bottom: 25px; opacity: 0.9; }
+
+        /* Aesthetic Info Lines */
+        .aesthetic-lines {
+            background: #fff5f7;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .line { margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+
+        .bento-links {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
         }
 
         .bento-item {
-            background: #fff5f7;
-            border: 2px solid #ffdae0;
+            background: white;
+            border: 1px solid #ffdae0;
             padding: 15px;
             border-radius: 15px;
             text-decoration: none;
             color: #7a5c5c;
-            font-size: 0.8rem;
-            transition: 0.2s;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .bento-item:hover {
-            background: #ffdae0;
-            transform: scale(1.02);
+            background: #fffafa;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 182, 193, 0.2);
         }
     </style>
 </head>
 <body>
 
     <div class="window">
-        <div class="window-bar">
+        <div class="window-header">
             <div class="dots">
-                <div class="dot" style="background: #ff8fa3;"></div>
-                <div class="dot" style="background: #ffdae0;"></div>
+                <div class="dot" style="background: #ffb6c1;"></div>
+                <div class="dot"></div>
                 <div class="dot"></div>
             </div>
-            <span style="font-size: 0.7rem; font-weight: bold;">ALISHA.EXE</span>
+            <span style="font-size: 0.7rem; font-weight: bold; opacity: 0.5;">ALISHA.PORTFOLIO</span>
         </div>
-        
-        <div class="content">
-            <div class="profile-area">
-                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alisha" alt="Alisha">
-            </div>
-            <div class="title">Pretty in Peach</div>
-            <p style="font-size: 0.9rem;">Digital Aesthetic Stylist ✨</p>
 
-            <div class="bento-grid">
-                <a href="#" class="bento-item"><b>Icons</b><br>Custom Sets</a>
-                <a href="#" class="bento-item"><b>Resumes</b><br>Aesthetic UI</a>
-                <a href="#" class="bento-item"><b>Moodboards</b><br>Brand Vibes</a>
-                <a href="#" class="bento-item"><b>Contact</b><br>Work with me</a>
+        <div class="content">
+            <div class="profile-wrapper">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alisha" class="profile-pic" alt="Alisha">
+                <div class="sparkle-decor">✨</div>
+            </div>
+
+            <h1>hi, i'm alisha</h1>
+            <p class="intro">
+                Software Engineering student with a love for soft aesthetics and digital creation. Currently building my corner of the internet.
+            </p>
+
+            <div class="aesthetic-lines">
+                <div class="line">☁️ <b>status:</b> manifesting big things</div>
+                <div class="line">🎧 <b>listening:</b> lofi beats</div>
+                <div class="line">💻 <b>coding:</b> my first website</div>
+            </div>
+
+            <div class="bento-links">
+                <a href="#" class="bento-item">Projects 🎀</a>
+                <a href="#" class="bento-item">Services 🌷</a>
+                <a href="#" class="bento-item">Pinterest ☁️</a>
+                <a href="#" class="bento-item">Contact 💌</a>
             </div>
         </div>
     </div>
