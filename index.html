@@ -2,95 +2,124 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alisha | Character Studio</title>
+    <title>Alisha Studio | Character Creator</title>
     <style>
-        :root { --peach: #ffdae0; --soft: #fff5f7; --text: #7a5c5c; }
-        body { 
-            background: var(--soft); 
-            background-image: radial-gradient(var(--peach) 1px, transparent 1px);
-            background-size: 25px 25px;
-            font-family: 'Outfit', sans-serif; color: var(--text);
-            margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center;
+        :root {
+            --girl-bg: #fff5f7; --girl-accent: #ffb6c1;
+            --boy-bg: #f0f7ff; --boy-accent: #b6d4ff;
+            --main-bg: var(--girl-bg); --main-accent: var(--girl-accent);
         }
 
-        /* Desktop Window Look */
-        .window {
-            background: white; border: 3px solid #7a5c5c; border-radius: 15px;
-            width: 100%; max-width: 500px; box-shadow: 10px 10px 0px var(--peach);
-            margin-bottom: 30px; overflow: hidden;
+        body {
+            background-color: var(--main-bg);
+            transition: 0.5s;
+            font-family: 'Outfit', sans-serif;
+            display: flex; flex-direction: column; align-items: center; padding: 20px;
         }
-        .header { background: var(--peach); padding: 10px; border-bottom: 3px solid #7a5c5c; font-weight: bold; text-align: center; font-size: 0.8rem; }
 
-        /* Character Creator */
-        .creator-box { padding: 30px; text-align: center; }
-        .avatar-display { font-size: 80px; background: var(--soft); border-radius: 50%; width: 150px; height: 150px; line-height: 150px; margin: 0 auto 20px; border: 2px dashed var(--peach); }
-        .controls button { background: white; border: 2px solid var(--peach); padding: 8px 15px; border-radius: 10px; cursor: pointer; color: var(--text); font-weight: bold; margin: 5px; transition: 0.3s; }
-        .controls button:hover { background: var(--peach); color: white; }
-        
-        #visitor-name { border: 2px solid var(--peach); padding: 10px; border-radius: 10px; margin-top: 15px; width: 80%; outline: none; }
-        .join-btn { background: #ff8fa3 !important; color: white !important; margin-top: 15px !important; width: 85%; padding: 12px !important; }
+        /* Top Portfolio Intro */
+        .intro-header {
+            background: white; border: 2px solid var(--main-accent);
+            padding: 15px; border-radius: 20px; width: 90%; max-width: 500px;
+            text-align: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
 
-        /* Community Gallery */
-        .gallery-title { font-size: 1.2rem; margin: 20px 0 10px; color: #ff8fa3; letter-spacing: 2px; }
-        .gallery-scroll { display: flex; gap: 15px; overflow-x: auto; width: 100%; max-width: 500px; padding: 10px; background: white; border: 2px solid var(--peach); border-radius: 15px; }
-        .participant { min-width: 80px; text-align: center; font-size: 0.7rem; }
-        .p-avatar { font-size: 30px; display: block; }
+        /* Character Canvas */
+        .creator-card {
+            background: white; width: 90%; max-width: 500px;
+            border-radius: 30px; border: 3px solid white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden;
+        }
 
-        /* Social Footer */
-        .footer-links { display: flex; gap: 15px; margin-top: 20px; }
-        .footer-btn { text-decoration: none; background: white; border: 2px solid #7a5c5c; padding: 12px 25px; border-radius: 50px; color: #7a5c5c; font-weight: bold; box-shadow: 4px 4px 0px var(--peach); transition: 0.2s; }
-        .footer-btn:hover { transform: translate(2px, 2px); box-shadow: 0px 0px 0px; }
+        .preview-area {
+            height: 250px; background: var(--main-bg);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 80px; position: relative;
+        }
+
+        .floating-sparkle {
+            position: absolute; animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .controls { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .btn {
+            background: var(--main-bg); border: 2px solid var(--main-accent);
+            padding: 10px; border-radius: 15px; cursor: pointer; font-weight: bold;
+            color: #7a5c5c; transition: 0.3s;
+        }
+
+        .btn:hover { background: var(--main-accent); color: white; }
+
+        .character-line-box {
+            margin: 15px; padding: 10px; border: 1px dashed var(--main-accent);
+            border-radius: 10px; font-style: italic; font-size: 0.8rem;
+        }
+
+        .footer-tag { margin-top: 20px; font-size: 0.7rem; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-    <div class="window">
-        <div class="header">CHARACTER_CREATOR.EXE</div>
-        <div class="creator-box">
-            <div id="avatar" class="avatar-display">🌸</div>
-            <div class="controls">
-                <button onclick="changeStyle('prev')">←</button>
-                <button onclick="changeStyle('next')">→</button>
-            </div>
-            <input type="text" id="visitor-name" placeholder="Name your character...">
-            <button class="join-btn" onclick="addToGallery()">Join the Community ✨</button>
+    <div class="intro-header">
+        <h3 style="margin:0; color:var(--main-accent)">hi, i'm alisha 🌷</h3>
+        <p style="font-size:0.8rem; margin:5px 0;">18y/o Software Engineering Student @ VU. Let's create together!</p>
+    </div>
+
+    <div class="creator-card">
+        <div class="preview-area" id="char-preview">
+            <span id="anime-char">👩🏻‍🎨</span>
+            <div class="floating-sparkle" style="top:20px; right:40px;">✨</div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="setGender('girl')">Girl Style 🎀</button>
+            <button class="btn" onclick="setGender('boy')">Boy Style 🧢</button>
+            <button class="btn" onclick="changeHair()">Change Hair</button>
+            <button class="btn" onclick="changeOutfit()">Change Outfit</button>
+        </div>
+
+        <div class="character-line-box">
+            "Looking aesthetic today! ✨"
+        </div>
+        
+        <div style="text-align:center; padding-bottom:20px;">
+            <a href="#" style="color:var(--main-accent); font-weight:bold; text-decoration:none;">Follow Me ☁️</a>
         </div>
     </div>
 
-    <div class="gallery-title">💖 COMMUNITY GALLERY 💖</div>
-    <div class="gallery-scroll" id="gallery">
-        <div class="participant"><span class="p-avatar">🧸</span><span>Sample</span></div>
-        <div class="participant"><span class="p-avatar">🐱</span><span>Studio_Fan</span></div>
-    </div>
-
-    <div class="footer-links">
-        <a href="#" class="footer-btn">Follow Me 🎀</a>
-        <a href="#" class="footer-btn">Message 💌</a>
-    </div>
+    <div class="footer-tag">created with love by alisha</div>
 
     <script>
-        const styles = ['🌸', '🐱', '🎀', '☁️', '🧸', '🍼', '🐰', '🍓', '🦋'];
-        let currentIndex = 0;
+        let currentGender = 'girl';
+        const girls = ['👩🏻‍🎨', '👩🏼‍🎤', '👩🏻‍💻', '👸🏻', '🧚🏻‍♀️'];
+        const boys = ['🧑🏻‍🎨', '🧑🏼‍🚀', '🧑🏻‍💻', '🤴🏻', '🥷🏻'];
 
-        function changeStyle(dir) {
-            if(dir === 'next') currentIndex = (currentIndex + 1) % styles.length;
-            else currentIndex = (currentIndex - 1 + styles.length) % styles.length;
-            document.getElementById('avatar').innerText = styles[currentIndex];
+        function setGender(type) {
+            currentGender = type;
+            const root = document.documentElement;
+            if(type === 'girl') {
+                root.style.setProperty('--main-bg', '#fff5f7');
+                root.style.setProperty('--main-accent', '#ffb6c1');
+                document.getElementById('anime-char').innerText = '👩🏻‍🎨';
+            } else {
+                root.style.setProperty('--main-bg', '#f0f7ff');
+                root.style.setProperty('--main-accent', '#b6d4ff');
+                document.getElementById('anime-char').innerText = '🧑🏻‍🎨';
+            }
         }
 
-        function addToGallery() {
-            const name = document.getElementById('visitor-name').value;
-            const avatar = document.getElementById('avatar').innerText;
-            if(!name) { alert("Please give your character a name! ✨"); return; }
-            
-            const gallery = document.getElementById('gallery');
-            const newChar = document.createElement('div');
-            newChar.className = 'participant';
-            newChar.innerHTML = `<span class="p-avatar">${avatar}</span><span>${name}</span>`;
-            gallery.prepend(newChar);
-            
-            document.getElementById('visitor-name').value = '';
-            alert("Welcome to Alisha Studio, " + name + "! 🌷");
+        function changeHair() {
+            const list = currentGender === 'girl' ? girls : boys;
+            const randomChar = list[Math.floor(Math.random() * list.length)];
+            document.getElementById('anime-char').innerText = randomChar;
+        }
+
+        function changeOutfit() {
+            // This can be expanded to change specific overlay images
+            alert("Outfit changed! ✨ (You can add real images here next!)");
         }
     </script>
 </body>
