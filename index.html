@@ -2,94 +2,115 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alisha Studio | Desktop</title>
     <style>
         body {
-            background: linear-gradient(180deg, #fff5f7 0%, #ffe4e8 100%);
-            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #fce4ec;
+            background-image: radial-gradient(#f8bbd0 1px, transparent 1px);
+            background-size: 25px 25px; /* Grid background like your image */
+            font-family: 'Courier New', Courier, monospace;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
-            margin: 0;
-            color: #7a5c5c;
-        }
-
-        /* Profile Picture Area */
-        .profile-pic {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: #ffdae0;
-            border: 4px solid white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 40px;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
-        h1 {
-            font-size: 1.4rem;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        .subtitle {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-bottom: 30px;
-        }
-
-        /* The Links */
-        .links-container {
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .link-card {
+        /* The "Computer Window" */
+        .window {
+            width: 90%;
+            max-width: 500px;
             background: white;
-            display: block;
+            border: 3px solid #7a5c5c;
+            box-shadow: 8px 8px 0px #ffc1cc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .window-bar {
+            background: #ffc1cc;
+            padding: 10px;
+            border-bottom: 3px solid #7a5c5c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dots { display: flex; gap: 5px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #7a5c5c; }
+
+        .content {
+            padding: 30px;
             text-align: center;
-            padding: 16px;
+        }
+
+        .profile-area img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #ffc1cc;
             margin-bottom: 15px;
-            text-decoration: none;
-            color: #5d4a4a;
-            font-weight: 500;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            color: #ff8fa3;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .bento-item {
+            background: #fff5f7;
+            border: 2px solid #ffdae0;
+            padding: 15px;
             border-radius: 15px;
-            border: 1px solid #ffdae0;
-            transition: all 0.3s ease;
-        }
-
-        .link-card:hover {
-            transform: translateY(-3px);
-            background-color: #fffafb;
-            box-shadow: 0 10px 20px rgba(255, 182, 193, 0.4);
-            border-color: #ffb6c1;
-        }
-
-        .footer {
-            margin-top: 40px;
+            text-decoration: none;
+            color: #7a5c5c;
             font-size: 0.8rem;
-            opacity: 0.5;
+            transition: 0.2s;
+        }
+
+        .bento-item:hover {
+            background: #ffdae0;
+            transform: scale(1.02);
         }
     </style>
 </head>
 <body>
 
-    <div class="profile-pic">🌸</div>
-    
-    <h1>@its_arikawaii</h1>
-    <p class="subtitle">staying aesthetic ✨</p>
+    <div class="window">
+        <div class="window-bar">
+            <div class="dots">
+                <div class="dot" style="background: #ff8fa3;"></div>
+                <div class="dot" style="background: #ffdae0;"></div>
+                <div class="dot"></div>
+            </div>
+            <span style="font-size: 0.7rem; font-weight: bold;">ALISHA.EXE</span>
+        </div>
+        
+        <div class="content">
+            <div class="profile-area">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alisha" alt="Alisha">
+            </div>
+            <div class="title">Pretty in Peach</div>
+            <p style="font-size: 0.9rem;">Digital Aesthetic Stylist ✨</p>
 
-    <div class="links-container">
-        <a href="https://www.snapchat.com/add/alishabasit3164?share_id=kv7_QScc4FM&locale=en-US" class="link-card">My snapchart 💗 </a>
-        <a href="#" class="link-card">Shop My Outfits🫧 </a>
-        <a href="#" class="link-card">Pinterest Inspo 🎀</a>
-        <a href="#" class="link-card">DM Me 💌</a>
+            <div class="bento-grid">
+                <a href="#" class="bento-item"><b>Icons</b><br>Custom Sets</a>
+                <a href="#" class="bento-item"><b>Resumes</b><br>Aesthetic UI</a>
+                <a href="#" class="bento-item"><b>Moodboards</b><br>Brand Vibes</a>
+                <a href="#" class="bento-item"><b>Contact</b><br>Work with me</a>
+            </div>
+        </div>
     </div>
-
-    <div class="footer">made with love from Ari</div>
 
 </body>
 </html>
