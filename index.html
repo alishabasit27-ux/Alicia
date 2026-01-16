@@ -3,176 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alicia's VibeSpace</title>
+    <title>Alicia | Studio VibeSpace</title>
     <style>
-        /* --- Base Styles & Dreamy Background --- */
+        :root {
+            --primary: #f472b6;
+            --secondary: #818cf8;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
-            background: radial-gradient(circle at top right, #1e1b4b, #0f172a 70%);
-            font-family: 'Inter', sans-serif;
+            background: #020617;
             color: #f8fafc;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
 
-        /* --- Welcome Hero Section --- */
-        .hero {
+        /* --- Floating Particles Background --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* --- Header & Intro --- */
+        header {
+            padding: 100px 20px;
             text-align: center;
-            padding: 80px 20px;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .hero h1 {
-            font-size: 3rem;
-            background: linear-gradient(to right, #818cf8, #f472b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-        .hero p { color: #94a3b8; font-size: 1.1rem; }
-
-        /* --- Upload / Create Section --- */
-        .upload-section {
-            max-width: 600px;
-            margin: -40px auto 40px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            padding: 30px;
+        .welcome-badge {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 5px 15px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            z-index: 10;
-            position: relative;
-        }
-        .upload-section h2 { margin-bottom: 20px; font-size: 1.2rem; color: #f472b6; }
-        input, textarea, select {
-            width: 100%;
-            padding: 12px;
+            font-size: 0.8rem;
+            color: var(--primary);
             margin-bottom: 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: white;
-            outline: none;
+            display: inline-block;
         }
-        .btn-post {
-            background: linear-gradient(to right, #6366f1, #a855f7);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            width: 100%;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .btn-post:hover { opacity: 0.9; transform: scale(1.02); }
+        header h1 { font-size: 4rem; font-weight: 800; letter-spacing: -3px; }
 
-        /* --- The Balanced Grid --- */
+        /* --- The Grid --- */
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Fixes the "right section" issue */
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 40px 20px;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 12px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .card:hover {
+            transform: scale(1.02) translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(244, 114, 182, 0.1);
+        }
+        .card img {
+            width: 100%; height: 380px;
+            object-fit: cover;
             border-radius: 18px;
-            padding: 15px;
-            transition: 0.4s ease;
+            margin-bottom: 15px;
         }
-        .card:hover { transform: translateY(-10px); border-color: #f472b6; }
-        .card img { width: 100%; border-radius: 12px; margin-bottom: 15px; }
-        .tag { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #818cf8; }
 
-        /* --- Footer --- */
-        footer {
-            text-align: center;
-            padding: 50px;
-            color: #64748b;
-            font-size: 0.9rem;
+        /* --- Dreamy Full-Screen Expand (Lightbox) --- */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.4s ease;
         }
+        .lightbox img {
+            max-height: 80vh;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        .close-btn {
+            position: absolute;
+            top: 40px; right: 40px;
+            font-size: 2rem; color: white; cursor: pointer;
+        }
+
+        /* --- Floating Music UI --- */
+        .music-player {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(15px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 99;
+        }
+        .play-dot { width: 10px; height: 10px; background: var(--primary); border-radius: 50%; animation: pulse 1.5s infinite; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
     </style>
 </head>
 <body>
 
-    <header class="hero">
-        <h1>Welcome to VibeSpace</h1>
-        <p>I'm Alicia. This is a creative corner for our stories, manga, and aesthetic vibes.</p>
+    <canvas id="bg-canvas"></canvas>
+
+    <header>
+        <div class="welcome-badge">Digital Brand Concept v1.0</div>
+        <h1>Studio VibeSpace.</h1>
+        <p style="color: #64748b; margin-top: 10px;">Created with love by Alicia</p>
     </header>
 
-    <section class="upload-section">
-        <h2>✨ Add to the Collective</h2>
-        <input type="text" id="postTitle" placeholder="Title (e.g., JJK Season 2 Hype)">
-        <select id="postCategory">
-            <option value="Manga">Manga</option>
-            <option value="Anime">Anime</option>
-            <option value="Fashion">Fashion</option>
-            <option value="Story">My Story</option>
-        </select>
-        <textarea id="postContent" placeholder="Write something interesting..."></textarea>
-        <label style="font-size: 0.8rem; color: #94a3b8; display: block; margin-bottom: 5px;">Upload Cover (Camera/Files):</label>
-        <input type="file" id="postImage" accept="image/*">
-        <button class="btn-post" onclick="addNewPost()">Post to Grid</button>
-    </section>
-
-    <main class="container" id="mainGrid">
-        <div class="card">
-            <span class="tag">Anime</span>
+    <main class="container">
+        <div class="card" onclick="openImage('https://m.media-amazon.com/images/M/MV5BNGY4MTg3NzgtMmFkZi00NTg5LWExMmEtMWI3YzI1ODdmMWQ1XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_.jpg')">
             <img src="https://m.media-amazon.com/images/M/MV5BNGY4MTg3NzgtMmFkZi00NTg5LWExMmEtMWI3YzI1ODdmMWQ1XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_.jpg" alt="JJK">
-            <h3>Jujutsu Kaisen Season 2</h3>
-            <p>The Shibuya Incident arc is hitting harder than anyone expected. Animation 10/10.</p>
+            <h3 style="padding: 0 10px;">Jujutsu Kaisen</h3>
+            <p style="padding: 0 10px 10px; font-size: 0.8rem; color: #94a3b8;">Anime / Shibuya Arc</p>
         </div>
-    </main>
 
-    <footer>
-        Created with love by Alicia &bull; 2026
-    </footer>
+        <div class="card" onclick="openImage('https://i.pinimg.com/736x/5e/0f/e8/5e0fe8a6307845566668499090489456.jpg')">
+            <img src="https://i.pinimg.com/736x/5e/0f/e8/5e0fe8a6307845566668499090489456.jpg" alt="CSM">
+            <h3 style="padding: 0 10px;">Chainsaw Man</h3>
+            <p style="padding: 0 10px 10px; font-size: 0.8rem; color: #94a3b8;">Manga / Dark Fantasy</p>
+        </div>
+
+        </main>
+
+    <div class="lightbox" id="lightbox" onclick="closeImage()">
+        <span class="close-btn">&times;</span>
+        <img id="lightbox-img" src="" alt="Full View">
+    </div>
+
+    <div class="music-player">
+        <div class="play-dot"></div>
+        <span style="font-size: 0.8rem;">Now Playing: Lofi Beats - Alicia Mix</span>
+    </div>
 
     <script>
-        function addNewPost() {
-            const title = document.getElementById('postTitle').value;
-            const category = document.getElementById('postCategory').value;
-            const content = document.getElementById('postContent').value;
-            const imageInput = document.getElementById('postImage');
-            const grid = document.getElementById('mainGrid');
-
-            if (!title || !content) {
-                alert("Please add a title and some content!");
-                return;
-            }
-
-            // Creating the new card
-            const newCard = document.createElement('div');
-            newCard.className = 'card';
-
-            // Handling the image upload
-            let imageSrc = 'https://via.placeholder.com/300x400?text=No+Image';
-            if (imageInput.files && imageInput.files[0]) {
-                imageSrc = URL.createObjectURL(imageInput.files[0]);
-            }
-
-            newCard.innerHTML = `
-                <span class="tag">${category}</span>
-                <img src="${imageSrc}" alt="${title}">
-                <h3>${title}</h3>
-                <p>${content}</p>
-            `;
-
-            // Adding the new card to the top of the grid
-            grid.prepend(newCard);
-
-            // Clear the form
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postContent').value = '';
-            imageInput.value = '';
+        // Lightbox Logic
+        function openImage(src) {
+            document.getElementById('lightbox').style.display = 'flex';
+            document.getElementById('lightbox-img').src = src;
         }
+        function closeImage() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        // Background Particle Effect (Simple Canvas Logic)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        for(let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                speed: Math.random() * 0.5
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#f472b6';
+            particles.forEach(p => {
+                p.y -= p.speed;
+                if(p.y < 0) p.y = canvas.height;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
     </script>
 </body>
 </html>
