@@ -2,286 +2,141 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alicia Studio | Chapter 01</title>
+    <title>Alisha Studio | Virtual Desktop v1.0</title>
     <style>
         :root {
-            --primary: #ffb6c1; --bg: #fff5f7; --text: #5d4a4a; --accent: #ff8fa3;
+            --peach: #ffb6c1; --soft: #fff5f7; --accent: #ff8fa3; --dark: #5d4a4a;
         }
         body {
-            background-color: var(--bg);
-            background-image: linear-gradient(var(--primary) 1.5px, transparent 1.5px), 
-                              linear-gradient(90deg, var(--primary) 1.5px, transparent 1.5px);
-            background-size: 50px 50px; /* The Y2K Grid Aesthetic */
+            background-color: var(--soft);
+            background-image: radial-gradient(var(--peach) 1.5px, transparent 1.5px);
+            background-size: 35px 35px; /* Image 1: Peachisty Grid */
             font-family: 'Outfit', sans-serif;
-            margin: 0; padding: 20px;
+            margin: 0; overflow: hidden; height: 100vh;
         }
 
-        /* BENTO INTRO: Clean & Professional */
-        .bento-container {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto 40px;
+        /* 1. THE BENTO INTRO (Always on top) */
+        .desktop-header {
+            position: fixed; top: 20px; left: 20px; right: 20px;
+            display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 15px; z-index: 1000;
         }
-
-        .bento-item {
+        .bento {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
-            border: 3px solid white;
-            border-radius: 30px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.2);
+            border: 3px solid white; border-radius: 25px; padding: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
         }
 
-        /* MANGA WORKSHOP */
-        .workshop {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border: 5px solid var(--text);
-            border-radius: 40px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            overflow: hidden;
-            box-shadow: 15px 15px 0px var(--accent);
+        /* 2. DRAGGABLE WINDOWS (Software Style) */
+        .window {
+            position: absolute; width: 400px; background: white;
+            border: 3px solid var(--dark); border-radius: 15px;
+            box-shadow: 10px 10px 0px var(--peach); overflow: hidden;
+            cursor: grab;
+        }
+        .window-bar {
+            background: var(--dark); color: white; padding: 8px 15px;
+            display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: bold;
         }
 
+        /* 3. MANGA WORKSHOP CONTENT */
         .canvas {
-            background: #fdfdfd;
-            border-right: 5px solid var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            min-height: 450px;
+            height: 350px; background: var(--soft); border-bottom: 3px solid var(--dark);
+            display: flex; justify-content: center; align-items: center; position: relative;
         }
+        #char-img { height: 90%; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1)); }
 
-        #anime-avatar {
-            width: 85%;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
-            transition: 0.3s;
+        .controls { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .choice-row { display: flex; gap: 8px; overflow-x: auto; }
+        .dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--peach); cursor: pointer; }
+
+        /* MANGA REPLIES */
+        .manga-grid {
+            position: absolute; top: 150px; right: 50px; width: 320px;
+            max-height: 70vh; overflow-y: auto; display: flex; flex-direction: column; gap: 15px;
         }
-
-        .speech-bubble {
-            position: absolute;
-            top: 30px; right: 20px;
-            background: white;
-            border: 3px solid var(--text);
-            padding: 15px;
-            border-radius: 50% 50% 50% 0;
-            font-weight: bold;
-            font-size: 0.8rem;
-            max-width: 120px;
-            box-shadow: 4px 4px 0 var(--text);
+        .panel { 
+            background: white; border: 3px solid var(--dark); padding: 10px; 
+            border-radius: 10px; position: relative;
         }
-
-        /* CREATOR UI */
-        .ui-panel { padding: 40px; display: flex; flex-direction: column; gap: 20px; }
-        
-        .option-row { display: flex; gap: 10px; overflow-x: auto; padding: 5px; }
-        .circle-btn {
-            min-width: 50px; height: 50px; border-radius: 50%;
-            border: 2px solid var(--primary); background: white;
-            cursor: pointer; font-size: 1.2rem;
-        }
-        .circle-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
-
-        .manga-input {
-            width: 100%; border: 3px solid var(--text);
-            padding: 15px; border-radius: 20px; font-family: inherit;
-        }
-
-        /* THE MANGA THREAD */
-        .manga-thread { max-width: 800px; margin: 60px auto; }
-        
-        .panel-container { position: relative; margin-bottom: 20px; }
-        
-        .manga-panel {
-            background: white; border: 3px solid var(--text);
-            padding: 15px; width: 300px;
-            box-shadow: 6px 6px 0 var(--text);
-        }
-
-        .reply-line {
-            position: absolute;
-            left: -40px; top: -20px;
-            width: 40px; height: 60px;
-            border-left: 4px solid var(--accent);
-            border-bottom: 4px solid var(--accent);
-            border-radius: 0 0 0 20px;
+        .reply-arrow {
+            width: 20px; height: 20px; margin-left: 20px;
+            border-left: 3px solid var(--peach); border-bottom: 3px solid var(--peach);
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header class="bento-container">
-            <div class="bento-item" style="text-align: center;">
-                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alisha" style="width: 80px; border-radius: 50%; border: 3px solid var(--primary);">
-                <h2 style="margin: 10px 0; font-size: 1.1rem; color: var(--accent);">Alicia Studio ✨</h2>
-                <div style="font-size: 0.7rem; font-weight: bold;">Est. 2026 | Lahore, PK</div>
+    <div class="desktop-header">
+        <div class="bento" style="text-align: center;">
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alisha" style="width: 50px; border-radius: 50%;">
+            <div style="font-weight: bold; font-size: 0.8rem; margin-top: 5px;">Alisha Studio ✨</div>
+        </div>
+        <div class="bento">
+            <div style="font-size: 0.75rem; line-height: 1.4;">
+                <b>System Status:</b> 18y/o Software Student. <br>
+                <b>Chapter:</b> Launching Digital Brand. 
             </div>
-            <div class="bento-item">
-                <h3 style="margin-top: 0;">Digital Archive: Chapter 01</h3>
-                <p style="font-size: 0.8rem; line-height: 1.6;">
-                    Building dreamy, soft-focus digital worlds. 
-                    Specializing in <b>Y2K Retro-Tech</b> aesthetics and collaborative storytelling.
-                </p>
-                <div style="font-size: 0.7rem; color: var(--accent);">Mutuals: Rin, Minori, Kuhaku 🌷</div>
-            </div>
-        </header>
-
-        <main class="workshop">
-            <div class="canvas">
-                <div class="speech-bubble" id="bubble-preview">Yapping... ✨</div>
-                <img id="anime-avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aria&skinColor=f8d250">
-            </div>
-
-            <div class="ui-panel">
-                <div style="display: flex; gap: 10px;">
-                    <button class="circle-btn" style="border-radius: 10px; width: auto; padding: 0 15px; font-size: 0.8rem;" onclick="setGender('girl')">Girl 🎀</button>
-                    <button class="circle-btn" style="border-radius: 10px; width: auto; padding: 0 15px; font-size: 0.8rem;" onclick="setGender('boy')">Boy 🎮</button>
-                </div>
-
-                <div style="font-size: 0.7rem; font-weight: bold; color: var(--accent);">STYLE & EYES:</div>
-                <div class="option-row" id="asset-picker"></div>
-
-                <textarea id="story-input" class="manga-input" placeholder="What's the story? ✍️" oninput="syncStory()"></textarea>
-                
-                <button class="circle-btn" style="width: 100%; border-radius: 50px; background: var(--text); color: white; font-weight: bold;" onclick="publishPanel()">📖 Publish to Manga Strip</button>
-            </div>
-        </main>
-
-        <div class="manga-thread" id="manga-strip"></div>
-
+        </div>
+        <div class="bento" style="font-size: 0.7rem; text-align: right;">
+            🌸 Rin | Minori | Kuhaku <br>
+            <div style="color: var(--accent); font-weight: bold;">Est. 2026</div>
+        </div>
     </div>
 
+    <div class="window" id="workshop" style="top: 150px; left: 50px;">
+        <div class="window-bar" onmousedown="dragStart(event, 'workshop')">
+            <span>MANGA_CREATOR.EXE</span>
+            <span>[ - □ × ]</span>
+        </div>
+        <div class="canvas">
+            <img id="char-img" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aria&skinColor=f8d250">
+            <div style="position: absolute; top: 20px; right: 20px; background: white; border: 2px solid var(--dark); padding: 8px; border-radius: 15px; font-size: 0.7rem; font-weight: bold;" id="bubble">Yapping... ✨</div>
+        </div>
+        <div class="controls">
+            <div class="choice-row">
+                <button onclick="setLook('Aria')" class="dot">🎀</button>
+                <button onclick="setLook('Kiki')" class="dot">☁️</button>
+                <button onclick="setLook('Luna')" class="dot">✨</button>
+                <button onclick="setSkin('f8d250')" class="dot" style="background:#f8d250"></button>
+                <button onclick="setSkin('ffdbac')" class="dot" style="background:#ffdbac"></button>
+            </div>
+            <input type="text" id="manga-input" placeholder="Type story..." oninput="sync()" style="padding: 10px; border-radius: 10px; border: 2px solid var(--peach);">
+            <button onclick="publish()" style="background: var(--dark); color: white; border: none; padding: 10px; border-radius: 50px; font-weight: bold; cursor: pointer;">📖 Publish Panel</button>
+        </div>
+    </div>
+
+    <div class="manga-grid" id="feed"></div>
+
     <script>
-        let currentMode = 'girl';
-        let currentSeed = 'Aria';
-        let isReply = false;
+        let seed = 'Aria'; let skin = 'f8d250';
+        function setLook(s) { seed = s; update(); }
+        function setSkin(s) { skin = s; update(); }
+        function update() { document.getElementById('char-img').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}&skinColor=${skin}`; }
+        function sync() { document.getElementById('bubble').innerText = document.getElementById('manga-input').value || "Yapping... ✨"; }
 
-        const assets = {
-            girl: ['Aria', 'Mimi', 'Kiki', 'Luna'],
-            boy: ['Felix', 'Jax', 'Kai', 'Leo']
-        };
-
-        function init() {
-            const picker = document.getElementById('asset-picker');
-            picker.innerHTML = '';
-            assets[currentMode].forEach(seed => {
-                const btn = document.createElement('button');
-                btn.className = 'circle-btn';
-                btn.innerHTML = `<img src="https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}&skinColor=f8d250" style="width: 70%;">`;
-                btn.onclick = () => {
-                    currentSeed = seed;
-                    document.getElementById('anime-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}&skinColor=f8d250`;
-                };
-                picker.appendChild(btn);
-            });
-        }
-
-        function setGender(g) {
-            currentMode = g;
-            currentSeed = assets[g][0];
-            document.getElementById('anime-avatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${currentSeed}&skinColor=f8d250`;
-            init();
-        }
-
-        function syncStory() {
-            const val = document.getElementById('story-input').value;
-            document.getElementById('bubble-preview').innerText = val ? val : "Yapping... ✨";
-        }
-
-        function publishPanel() {
-            const story = document.getElementById('story-input').value || "...";
-            const strip = document.getElementById('manga-strip');
-            
-            const container = document.createElement('div');
-            container.className = 'panel-container';
-            if (isReply) {
-                container.innerHTML = `<div class="reply-line"></div>`;
-                container.style.marginLeft = "60px";
-            }
-
+        function publish() {
+            const feed = document.getElementById('feed');
+            const story = document.getElementById('manga-input').value || "...";
             const panel = document.createElement('div');
-            panel.className = 'manga-panel';
-            panel.innerHTML = `
-                <img src="${document.getElementById('anime-avatar').src}" style="width: 100%;">
-                <p style="font-weight: bold; font-size: 0.8rem; border-top: 2px solid #5d4a4a; padding-top: 10px;">${story}</p>
-                <button onclick="prepareReply()" style="font-size: 0.6rem; background: none; border: 1px solid #ff8fa3; color: #ff8fa3; cursor: pointer; border-radius: 5px;">Reply Story</button>
-            `;
+            panel.className = 'panel';
+            panel.innerHTML = `<img src="${document.getElementById('char-img').src}" style="width:100%;"><p style="font-size:0.7rem; font-weight:bold; border-top:2px solid var(--dark); padding-top:5px;">${story}</p>`;
+            feed.prepend(panel);
+        }
 
-            container.appendChild(panel);
-            strip.prepend(container);
+        // Software Engineering logic for Draggable Windows
+        let activeWin = null;
+        function dragStart(e, id) {
+            activeWin = document.getElementById(id);
+            let shiftX = e.clientX - activeWin.getBoundingClientRect().left;
+            let shiftY = e.clientY - activeWin.getBoundingClientRect().top;
             
-            // Reset
-            isReply = false;
-            document.getElementById('story-input').value = '';
+            document.onmousemove = function(e) {
+                activeWin.style.left = e.pageX - shiftX + 'px';
+                activeWin.style.top = e.pageY - shiftY + 'px';
+            };
+            document.onmouseup = () => { document.onmousemove = null; };
         }
-
-        function prepareReply() {
-            isReply = true;
-            document.querySelector('.workshop').scrollIntoView({ behavior: 'smooth' });
-            alert("Creating a reply panel! ✨");
-        }
-
-        init();
     </script>
-<style>
-    .manga-panel-active {
-        filter: saturate(1.2) contrast(1.1) brightness(1.05);
-        box-shadow: 0 0 20px rgba(255, 182, 193, 0.5); /* Soft Glow */
-    }
-
-    /* The Draggable Note */
-    #draggable-note {
-        position: absolute;
-        width: 180px;
-        background: #fff9c4;
-        border: 1px solid #fbc02d;
-        padding: 15px;
-        cursor: move;
-        transform: rotate(-2deg);
-        z-index: 99;
-    }
-</style>
-
-<div id="draggable-note">
-    <p style="font-family: 'Comic Sans MS', cursive; font-size: 0.8rem; margin: 0;">
-        "Chapter 01: The Beginning. Leave a story below! ✨" - Alicia 
-    </p>
-</div>
-
-<script>
-    // Software Engineering Logic: Simple Drag & Drop
-    const note = document.getElementById('draggable-note');
-    let isDragging = false;
-    let offset = { x: 0, y: 0 };
-
-    note.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        offset.x = e.clientX - note.offsetLeft;
-        offset.y = e.clientY - note.offsetTop;
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        note.style.left = (e.clientX - offset.x) + 'px';
-        note.style.top = (e.clientY - offset.y) + 'px';
-    });
-
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-
-    // Toggle for the "Dreamy Glow"
-    function toggleGlow() {
-        const char = document.getElementById('anime-avatar');
-        char.classList.toggle('manga-panel-active');
-    }
-</script>
 </body>
 </html>
