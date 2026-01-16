@@ -2,140 +2,97 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Alisha Studio | Virtual Desktop v1.0</title>
+    <title>Alicia Studio | Sanctuary</title>
     <style>
-        :root {
-            --peach: #ffb6c1; --soft: #fff5f7; --accent: #ff8fa3; --dark: #5d4a4a;
-        }
-        body {
-            background-color: var(--soft);
-            background-image: radial-gradient(var(--peach) 1.5px, transparent 1.5px);
-            background-size: 35px 35px; /* Image 1: Peachisty Grid */
-            font-family: 'Outfit', sans-serif;
-            margin: 0; overflow: hidden; height: 100vh;
+        :root { --p: #ffb6c1; --bg: #fff5f7; --accent: #ff8fa3; }
+        .boy-mode { --p: #89CFF0; --bg: #f0f8ff; --accent: #5dade2; }
+
+        body { 
+            background: var(--bg); font-family: 'Outfit', sans-serif; 
+            transition: 0.8s ease-in-out; margin: 0; overflow-x: hidden;
         }
 
-        /* 1. THE BENTO INTRO (Always on top) */
-        .desktop-header {
-            position: fixed; top: 20px; left: 20px; right: 20px;
-            display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 15px; z-index: 1000;
+        /* 1. THE KAGURA-STYLE INTRO */
+        .intro-screen {
+            height: 100vh; display: flex; align-items: center; justify-content: space-around;
+            background: linear-gradient(135deg, white, var(--bg));
         }
-        .bento {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 3px solid white; border-radius: 25px; padding: 15px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-        }
-
-        /* 2. DRAGGABLE WINDOWS (Software Style) */
-        .window {
-            position: absolute; width: 400px; background: white;
-            border: 3px solid var(--dark); border-radius: 15px;
-            box-shadow: 10px 10px 0px var(--peach); overflow: hidden;
-            cursor: grab;
-        }
-        .window-bar {
-            background: var(--dark); color: white; padding: 8px 15px;
-            display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: bold;
+        .alicia-portrait { width: 40%; border-radius: 40px; box-shadow: 20px 20px 0 var(--p); }
+        
+        /* 2. THE MAGIC LETTER */
+        #magic-letter {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 40px; border: 3px solid var(--p); border-radius: 20px;
+            text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.1); z-index: 100;
         }
 
-        /* 3. MANGA WORKSHOP CONTENT */
-        .canvas {
-            height: 350px; background: var(--soft); border-bottom: 3px solid var(--dark);
-            display: flex; justify-content: center; align-items: center; position: relative;
+        /* 3. BENTO HUB */
+        .sanctuary-grid {
+            display: none; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 40px;
         }
-        #char-img { height: 90%; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1)); }
-
-        .controls { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .choice-row { display: flex; gap: 8px; overflow-x: auto; }
-        .dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--peach); cursor: pointer; }
-
-        /* MANGA REPLIES */
-        .manga-grid {
-            position: absolute; top: 150px; right: 50px; width: 320px;
-            max-height: 70vh; overflow-y: auto; display: flex; flex-direction: column; gap: 15px;
-        }
-        .panel { 
-            background: white; border: 3px solid var(--dark); padding: 10px; 
-            border-radius: 10px; position: relative;
-        }
-        .reply-arrow {
-            width: 20px; height: 20px; margin-left: 20px;
-            border-left: 3px solid var(--peach); border-bottom: 3px solid var(--peach);
+        .bento-box { 
+            background: white; border: 3px solid var(--p); border-radius: 30px; 
+            padding: 20px; box-shadow: 8px 8px 0 var(--p);
         }
     </style>
 </head>
-<body>
+<body id="main-body">
 
-    <div class="desktop-header">
-        <div class="bento" style="text-align: center;">
-            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alisha" style="width: 50px; border-radius: 50%;">
-            <div style="font-weight: bold; font-size: 0.8rem; margin-top: 5px;">Alisha Studio ✨</div>
+    <section class="intro-screen" id="intro">
+        <div style="width: 40%;">
+            <h1 style="font-size: 3rem; color: var(--accent);">ALICIA</h1>
+            <p>A digital atelier for dreamy creators and cool thinkers. We don't just write code; we build worlds.</p>
+            <button onclick="openLetter()" class="magic-btn">Let's enter the magic world ✨</button>
         </div>
-        <div class="bento">
-            <div style="font-size: 0.75rem; line-height: 1.4;">
-                <b>System Status:</b> 18y/o Software Student. <br>
-                <b>Chapter:</b> Launching Digital Brand. 
-            </div>
-        </div>
-        <div class="bento" style="font-size: 0.7rem; text-align: right;">
-            🌸 Rin | Minori | Kuhaku <br>
-            <div style="color: var(--accent); font-weight: bold;">Est. 2026</div>
+        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alicia&skinColor=f8d250" class="alicia-portrait">
+    </section>
+
+    <div id="magic-letter">
+        <p><i>"What name shall I write in the stars for you?"</i></p>
+        <input type="text" id="user-name" placeholder="Your cool name...">
+        <div style="margin: 20px 0;">
+            <button onclick="startMagic('girl')">Cool Girl 🎀</button>
+            <button onclick="startMagic('boy')">Cool Boy 🎮</button>
         </div>
     </div>
 
-    <div class="window" id="workshop" style="top: 150px; left: 50px;">
-        <div class="window-bar" onmousedown="dragStart(event, 'workshop')">
-            <span>MANGA_CREATOR.EXE</span>
-            <span>[ - □ × ]</span>
+    <main class="sanctuary-grid" id="hub">
+        <div class="bento-box" style="grid-column: span 2;">
+            <h2 id="greet"></h2>
+            <p>Write your subjects and goals below to start your journey.</p>
+            <textarea placeholder="Current Quests (e.g. Master CS201)..." style="width:90%; border-radius: 15px; padding:10px;"></textarea>
         </div>
-        <div class="canvas">
-            <img id="char-img" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aria&skinColor=f8d250">
-            <div style="position: absolute; top: 20px; right: 20px; background: white; border: 2px solid var(--dark); padding: 8px; border-radius: 15px; font-size: 0.7rem; font-weight: bold;" id="bubble">Yapping... ✨</div>
+        <div class="bento-box">
+            <h3>🎵 Music Vibe</h3>
+            <div style="height: 100px; background: var(--bg); border-radius: 15px;"></div>
         </div>
-        <div class="controls">
-            <div class="choice-row">
-                <button onclick="setLook('Aria')" class="dot">🎀</button>
-                <button onclick="setLook('Kiki')" class="dot">☁️</button>
-                <button onclick="setLook('Luna')" class="dot">✨</button>
-                <button onclick="setSkin('f8d250')" class="dot" style="background:#f8d250"></button>
-                <button onclick="setSkin('ffdbac')" class="dot" style="background:#ffdbac"></button>
-            </div>
-            <input type="text" id="manga-input" placeholder="Type story..." oninput="sync()" style="padding: 10px; border-radius: 10px; border: 2px solid var(--peach);">
-            <button onclick="publish()" style="background: var(--dark); color: white; border: none; padding: 10px; border-radius: 50px; font-weight: bold; cursor: pointer;">📖 Publish Panel</button>
+        <div class="bento-box">
+            <h3>🎨 Skills Atelier</h3>
+            <canvas id="canvas" style="width: 100%; height: 150px; border: 1px dashed var(--p);"></canvas>
         </div>
-    </div>
-
-    <div class="manga-grid" id="feed"></div>
+        <div class="bento-box" style="grid-column: span 2;">
+            <h3>📖 Anime Stories</h3>
+            <p>Drop your favorite recommendation and a little story for us...</p>
+            <input type="text" placeholder="Title..." style="width: 100%; margin-bottom: 10px;">
+            <textarea placeholder="Tell your story..." style="width: 100%;"></textarea>
+        </div>
+    </main>
 
     <script>
-        let seed = 'Aria'; let skin = 'f8d250';
-        function setLook(s) { seed = s; update(); }
-        function setSkin(s) { skin = s; update(); }
-        function update() { document.getElementById('char-img').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}&skinColor=${skin}`; }
-        function sync() { document.getElementById('bubble').innerText = document.getElementById('manga-input').value || "Yapping... ✨"; }
+        function openLetter() { document.getElementById('magic-letter').style.display = 'block'; }
 
-        function publish() {
-            const feed = document.getElementById('feed');
-            const story = document.getElementById('manga-input').value || "...";
-            const panel = document.createElement('div');
-            panel.className = 'panel';
-            panel.innerHTML = `<img src="${document.getElementById('char-img').src}" style="width:100%;"><p style="font-size:0.7rem; font-weight:bold; border-top:2px solid var(--dark); padding-top:5px;">${story}</p>`;
-            feed.prepend(panel);
-        }
-
-        // Software Engineering logic for Draggable Windows
-        let activeWin = null;
-        function dragStart(e, id) {
-            activeWin = document.getElementById(id);
-            let shiftX = e.clientX - activeWin.getBoundingClientRect().left;
-            let shiftY = e.clientY - activeWin.getBoundingClientRect().top;
+        function startMagic(gender) {
+            const name = document.getElementById('user-name').value || "Traveler";
+            if(gender === 'boy') document.getElementById('main-body').classList.add('boy-mode');
             
-            document.onmousemove = function(e) {
-                activeWin.style.left = e.pageX - shiftX + 'px';
-                activeWin.style.top = e.pageY - shiftY + 'px';
-            };
-            document.onmouseup = () => { document.onmousemove = null; };
+            document.getElementById('magic-letter').innerHTML = "<h1 style='font-size: 4rem;'>1... 2... 3... MAGIC! ✨</h1>";
+            
+            setTimeout(() => {
+                document.getElementById('intro').style.display = 'none';
+                document.getElementById('magic-letter').style.display = 'none';
+                document.getElementById('hub').style.display = 'grid';
+                document.getElementById('greet').innerText = `Welcome to the Sanctuary, ${name} ✨`;
+            }, 2000);
         }
     </script>
 </body>
