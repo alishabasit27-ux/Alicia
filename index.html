@@ -2,97 +2,227 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alicia Studio | Sanctuary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #ffb6c1; --bg: #fff5f7; --accent: #ff8fa3; }
-        .boy-mode { --p: #89CFF0; --bg: #f0f8ff; --accent: #5dade2; }
+        :root {
+            --primary: #ffb6c1; --bg: #fff5f7; --accent: #ff8fa3; --glass: rgba(255, 255, 255, 0.8);
+            --border: #5d4a4a;
+        }
+        .boy-mode { --primary: #89CFF0; --bg: #f0f8ff; --accent: #5dade2; }
 
         body { 
             background: var(--bg); font-family: 'Outfit', sans-serif; 
-            transition: 0.8s ease-in-out; margin: 0; overflow-x: hidden;
+            margin: 0; color: var(--border); transition: background 0.8s;
         }
 
-        /* 1. THE KAGURA-STYLE INTRO */
+        /* 1. KAGURA-STYLE INTRO */
         .intro-screen {
-            height: 100vh; display: flex; align-items: center; justify-content: space-around;
-            background: linear-gradient(135deg, white, var(--bg));
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: white; padding: 0 50px; transition: transform 0.8s ease-in-out;
         }
-        .alicia-portrait { width: 40%; border-radius: 40px; box-shadow: 20px 20px 0 var(--p); }
-        
-        /* 2. THE MAGIC LETTER */
-        #magic-letter {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: white; padding: 40px; border: 3px solid var(--p); border-radius: 20px;
-            text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.1); z-index: 100;
+        .intro-content { display: flex; align-items: center; gap: 80px; max-width: 1100px; }
+        .alicia-pfp { width: 400px; border-radius: 50px; box-shadow: 20px 20px 0 var(--primary); }
+        .about-text { max-width: 400px; }
+        .about-text h1 { font-size: 3.5rem; margin: 0; color: var(--accent); }
+        .magic-btn {
+            background: var(--accent); color: white; border: none; padding: 20px 40px;
+            border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.3s;
         }
 
-        /* 3. BENTO HUB */
-        .sanctuary-grid {
-            display: none; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 40px;
+        /* 2. THE MAGIC LETTER ENVELOPE */
+        .overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(8px); z-index: 100;
         }
-        .bento-box { 
-            background: white; border: 3px solid var(--p); border-radius: 30px; 
-            padding: 20px; box-shadow: 8px 8px 0 var(--p);
+        .envelope {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; border: 4px solid var(--primary); border-radius: 30px;
+            padding: 50px; text-align: center; width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);
         }
+
+        /* 3. 1-2-3 MAGIC TRANSITION */
+        #magic-countdown {
+            display: none; position: fixed; inset: 0; background: var(--bg);
+            z-index: 200; align-items: center; justify-content: center;
+            font-size: 5rem; font-weight: bold; color: var(--accent);
+        }
+
+        /* 4. THE BENTO HUB */
+        .sanctuary-hub {
+            display: none; padding: 60px 40px;
+            grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1200px; margin: 0 auto;
+        }
+        .bento {
+            background: white; border: 3px solid var(--primary); border-radius: 35px;
+            padding: 25px; box-shadow: 8px 8px 0 var(--primary);
+        }
+
+        /* SPECIFIC BENTO SECTIONS */
+        .study-box { grid-column: span 2; }
+        .skill-box { grid-row: span 2; }
+        .task-input { width: 100%; background: var(--bg); border: none; border-radius: 15px; padding: 12px; margin-top: 10px; }
+        .task-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid var(--bg); }
+
+        #canvas { border: 2px dashed var(--primary); border-radius: 20px; width: 100%; height: 200px; cursor: crosshair; }
+        .upload-area { border: 2px dashed var(--primary); padding: 20px; border-radius: 20px; text-align: center; }
+
+        .anime-card { background: var(--bg); padding: 15px; border-radius: 20px; margin-top: 10px; }
+        
+        @media (max-width: 900px) { .intro-content { flex-direction: column; } .sanctuary-hub { grid-template-columns: 1fr; } }
     </style>
 </head>
-<body id="main-body">
+<body id="page">
 
     <section class="intro-screen" id="intro">
-        <div style="width: 40%;">
-            <h1 style="font-size: 3rem; color: var(--accent);">ALICIA</h1>
-            <p>A digital atelier for dreamy creators and cool thinkers. We don't just write code; we build worlds.</p>
-            <button onclick="openLetter()" class="magic-btn">Let's enter the magic world ✨</button>
+        <div class="intro-content">
+            <div class="about-text">
+                <h1>ALICIA</h1>
+                <p style="font-size: 1.2rem; margin: 20px 0;">Welcome to my digital fragment. A world where cool code meets ethereal art. Here, every story finds a home.</p>
+                <button class="magic-btn" onclick="openLetter()">Let's enter the magic world ✨</button>
+            </div>
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alicia&skinColor=f8d250" class="alicia-pfp">
         </div>
-        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Alicia&skinColor=f8d250" class="alicia-portrait">
     </section>
 
-    <div id="magic-letter">
-        <p><i>"What name shall I write in the stars for you?"</i></p>
-        <input type="text" id="user-name" placeholder="Your cool name...">
-        <div style="margin: 20px 0;">
-            <button onclick="startMagic('girl')">Cool Girl 🎀</button>
-            <button onclick="startMagic('boy')">Cool Boy 🎮</button>
+    <div class="overlay" id="letter-overlay">
+        <div class="envelope">
+            <h3>A Letter for You... ✉️</h3>
+            <p><i>"What name shall I write in the stars for you?"</i></p>
+            <input type="text" id="user-name" class="task-input" style="text-align: center;" placeholder="Your cool little name...">
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="magic-btn" style="flex: 1; padding: 12px;" onclick="doMagic('girl')">Cool Girl 🎀</button>
+                <button class="magic-btn" style="flex: 1; padding: 12px;" onclick="doMagic('boy')">Cool Boy 🧢</button>
+            </div>
         </div>
     </div>
 
-    <main class="sanctuary-grid" id="hub">
-        <div class="bento-box" style="grid-column: span 2;">
+    <div id="magic-countdown">3...</div>
+
+    <main class="sanctuary-hub" id="hub">
+        <div class="bento study-box">
             <h2 id="greet"></h2>
-            <p>Write your subjects and goals below to start your journey.</p>
-            <textarea placeholder="Current Quests (e.g. Master CS201)..." style="width:90%; border-radius: 15px; padding:10px;"></textarea>
+            <p><b>Study Haven:</b> Your Quests & Subjects</p>
+            <div id="quest-list" style="max-height: 150px; overflow-y: auto;"></div>
+            <input type="text" id="quest-input" class="task-input" placeholder="Add a subject or goal... (Press Enter)" onkeypress="addQuest(event)">
         </div>
-        <div class="bento-box">
-            <h3>🎵 Music Vibe</h3>
-            <div style="height: 100px; background: var(--bg); border-radius: 15px;"></div>
-        </div>
-        <div class="bento-box">
+
+        <div class="bento skill-box">
             <h3>🎨 Skills Atelier</h3>
-            <canvas id="canvas" style="width: 100%; height: 150px; border: 1px dashed var(--p);"></canvas>
+            <canvas id="canvas"></canvas>
+            <button onclick="clearCanvas()" style="font-size: 0.7rem; cursor: pointer;">Clear Paper</button>
+            
+            <h4 style="margin-top: 30px;">🖼️ Gallery Upload</h4>
+            <div class="upload-area">
+                <input type="file" id="img-upload" hidden onchange="handleImg(event)">
+                <button onclick="document.getElementById('img-upload').click()" style="background:none; border:none; cursor:pointer;">📸 Upload from Gallery</button>
+                <div id="gallery-preview" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;"></div>
+            </div>
         </div>
-        <div class="bento-box" style="grid-column: span 2;">
-            <h3>📖 Anime Stories</h3>
-            <p>Drop your favorite recommendation and a little story for us...</p>
-            <input type="text" placeholder="Title..." style="width: 100%; margin-bottom: 10px;">
-            <textarea placeholder="Tell your story..." style="width: 100%;"></textarea>
+
+        <div class="bento">
+            <h3>🎵 Melody Box</h3>
+            <p style="font-size: 0.8rem;"><i>Current Recomms:</i></p>
+            <div class="anime-card">✨ Lofi Beats - Study Session</div>
+            <div class="anime-card">🌸 Ethereal Vibes - Dreamy</div>
+            <div class="anime-card">🧢 Retro Mix - Cool Boy</div>
+        </div>
+
+        <div class="bento study-box">
+            <h3>📖 Community Lounge</h3>
+            <p>Drop your favorite anime recommendation and a little story...</p>
+            <input type="text" id="anime-title" class="task-input" placeholder="Anime Title...">
+            <textarea id="anime-story" class="task-input" style="height: 60px;" placeholder="Tell us your story..."></textarea>
+            <button class="magic-btn" style="padding: 10px 20px; width: 100%; margin-top: 10px;" onclick="postStory()">Post to Community</button>
+            <div id="story-feed" style="margin-top: 20px;"></div>
         </div>
     </main>
 
     <script>
-        function openLetter() { document.getElementById('magic-letter').style.display = 'block'; }
+        // 1. NAVIGATION & MAGIC
+        function openLetter() { document.getElementById('letter-overlay').style.display = 'block'; }
 
-        function startMagic(gender) {
+        function doMagic(gender) {
             const name = document.getElementById('user-name').value || "Traveler";
-            if(gender === 'boy') document.getElementById('main-body').classList.add('boy-mode');
+            if(gender === 'boy') document.getElementById('page').classList.add('boy-mode');
             
-            document.getElementById('magic-letter').innerHTML = "<h1 style='font-size: 4rem;'>1... 2... 3... MAGIC! ✨</h1>";
+            document.getElementById('letter-overlay').style.display = 'none';
+            const count = document.getElementById('magic-countdown');
+            count.style.display = 'flex';
             
-            setTimeout(() => {
-                document.getElementById('intro').style.display = 'none';
-                document.getElementById('magic-letter').style.display = 'none';
-                document.getElementById('hub').style.display = 'grid';
-                document.getElementById('greet').innerText = `Welcome to the Sanctuary, ${name} ✨`;
-            }, 2000);
+            let i = 3;
+            const timer = setInterval(() => {
+                i--;
+                if(i > 0) count.innerText = `${i}...`;
+                else if(i === 0) count.innerText = `MAGIC! ✨`;
+                else {
+                    clearInterval(timer);
+                    count.style.display = 'none';
+                    document.getElementById('intro').style.display = 'none';
+                    document.getElementById('hub').style.display = 'grid';
+                    document.getElementById('greet').innerText = `Welcome to your Sanctuary, ${name} ✨`;
+                }
+            }, 1000);
+        }
+
+        // 2. STUDY SECTION LOGIC
+        function addQuest(e) {
+            if(e.key === 'Enter') {
+                const list = document.getElementById('quest-list');
+                const val = document.getElementById('quest-input').value;
+                if(val) {
+                    const div = document.createElement('div');
+                    div.className = 'task-item';
+                    div.innerHTML = `<span>📖 ${val}</span> <button onclick="this.parentElement.remove()" style="border:none; background:none; cursor:pointer;">❌</button>`;
+                    list.appendChild(div);
+                    document.getElementById('quest-input').value = '';
+                }
+            }
+        }
+
+        // 3. SKILLS CANVAS LOGIC
+        const cvs = document.getElementById('canvas');
+        const ctx = cvs.getContext('2d');
+        let drawing = false;
+        cvs.width = cvs.offsetWidth; cvs.height = cvs.offsetHeight;
+
+        cvs.onmousedown = () => drawing = true;
+        cvs.onmouseup = () => { drawing = false; ctx.beginPath(); };
+        cvs.onmousemove = (e) => {
+            if(!drawing) return;
+            ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.strokeStyle = '#ffb6c1';
+            ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY);
+        };
+        function clearCanvas() { ctx.clearRect(0,0,cvs.width,cvs.height); }
+
+        // 4. GALLERY UPLOAD
+        function handleImg(e) {
+            const preview = document.getElementById('gallery-preview');
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function() {
+                const img = document.createElement('img');
+                img.src = reader.result;
+                img.style = "width: 100%; border-radius: 10px; border: 2px solid var(--primary);";
+                preview.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // 5. COMMUNITY POSTS
+        function postStory() {
+            const title = document.getElementById('anime-title').value;
+            const story = document.getElementById('anime-story').value;
+            if(title && story) {
+                const feed = document.getElementById('story-feed');
+                const div = document.createElement('div');
+                div.className = 'anime-card';
+                div.innerHTML = `<b>${title}</b><p style="font-size:0.8rem; margin:5px 0;">${story}</p>`;
+                feed.prepend(div);
+                document.getElementById('anime-title').value = '';
+                document.getElementById('anime-story').value = '';
+            }
         }
     </script>
 </body>
