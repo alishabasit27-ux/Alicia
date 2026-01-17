@@ -10,19 +10,28 @@
             --secondary: #818cf8;
             --bg: #020617;
             --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: var(--bg); color: #f8fafc; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* --- Navigation --- */
+        /* --- Navigation & Search --- */
         .top-nav {
-            position: fixed; top: 0; width: 100%; display: flex; justify-content: center; gap: 30px;
-            padding: 20px; background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px);
-            z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 40px; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(20px);
+            z-index: 1000; border-bottom: 1px solid var(--border);
         }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
         .top-nav a { text-decoration: none; color: #94a3b8; font-size: 0.9rem; font-weight: 600; transition: 0.3s; }
         .top-nav a:hover, .top-nav a.active { color: var(--primary); }
+
+        .search-container { position: relative; width: 250px; }
+        .search-container input {
+            width: 100%; padding: 8px 15px; border-radius: 20px; border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05); color: white; outline: none; transition: 0.3s;
+        }
+        .search-container input:focus { border-color: var(--primary); background: rgba(255,255,255,0.1); }
 
         /* --- Dynamic Hero --- */
         .hero {
@@ -35,19 +44,17 @@
         .hero-tag { background: var(--primary); padding: 5px 15px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; margin-bottom: 15px; display: inline-block; }
         .hero h1 { font-size: 4rem; margin-bottom: 20px; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
 
-        /* --- Section Styling --- */
+        /* --- Grid Styling --- */
         .section-container { padding: 40px 60px; }
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .section-title { font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
         .section-title::before { content: ""; width: 4px; height: 24px; background: var(--primary); border-radius: 2px; }
 
-        /* --- Media Grid --- */
         .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-bottom: 50px; }
         .media-card { background: var(--glass); border-radius: 12px; overflow: hidden; transition: 0.4s; border: 1px solid rgba(255,255,255,0.05); position: relative; }
         .media-card:hover { transform: translateY(-10px); border-color: var(--secondary); }
         .media-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
         
-        /* --- Watchlist Button --- */
         .watchlist-btn {
             position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6);
             border: none; color: white; width: 35px; height: 35px; border-radius: 50%;
@@ -59,7 +66,7 @@
         .media-info h4 { font-size: 1rem; margin-bottom: 5px; }
         .media-info p { font-size: 0.8rem; color: #64748b; }
 
-        /* --- Watchlist Modal --- */
+        /* --- Watchlist Drawer --- */
         .watchlist-drawer {
             position: fixed; right: -400px; top: 0; width: 350px; height: 100%;
             background: #0f172a; border-left: 1px solid var(--border); z-index: 2000;
@@ -76,8 +83,13 @@
 <body>
 
     <nav class="top-nav">
-        <a href="#" class="active">Home</a>
-        <a href="javascript:void(0)" onclick="toggleWatchlist()">Watchlist (<span id="count">0</span>)</a>
+        <div class="nav-links">
+            <a href="#" class="active">Home</a>
+            <a href="javascript:void(0)" onclick="toggleWatchlist()">Watchlist (<span id="count">0</span>)</a>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search movies, manga..." onkeyup="filterGrid()">
+        </div>
     </nav>
 
     <section class="hero" id="hero-section">
@@ -108,7 +120,6 @@
     <footer>Created with love by Alicia &bull; 2026</footer>
 
     <script>
-        // 1. Data Structure for Content
         const contentData = [
             { id: 1, title: "Suzume", type: "Movie", img: "https://m.media-amazon.com/images/I/61wRyuG41CL._SY522_.jpg" },
             { id: 2, title: "Solo Leveling", type: "TV Show", img: "https://m.media-amazon.com/images/M/MV5BM2M4YzdkMTEtMjUyYy00ZWY0LWI5ODQtNGRkZWQ1MzU5MWM2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" },
@@ -116,27 +127,25 @@
             { id: 4, title: "Demon Slayer", type: "Movie", img: "https://images.fandango.com/ImageRenderer/0/0/redesign/static/img/default_poster--dark-mode.png/0/images/masterrepository/Fandango/239732/DSIC_DateAnnouncement_KV_2x3_V2.jpg" },
             { id: 5, title: "Spy x Family", type: "TV Show", img: "https://cdn.animenewsnetwork.com/thumbnails/fit750x750/cms/news.5/189080/spf2_keyvisual.jpg" },
             { id: 6, title: "Death's Game", type: "TV Show", img: "https://flixpatrol.com/runtime/cache/files/posters/d/w350/dx8oxplctt2b3jkvpdbjxoun3mt.jpg" },
-            { id: 7, title: "The Villainess Is Adored by the Prince of the Neighbor Kingdom", type: "Manga/Japanese Comic", img: "https://c.mangaplaza.com/thumbnail/0303012121/103030121210001.jpg" },
+            { id: 7, title: "The Villainess Is Adored", type: "Manga", img: "https://c.mangaplaza.com/thumbnail/0303012121/103030121210001.jpg" },
             { id: 8, title: "Sweet & Sour", type: "Movie", img: "https://images.justwatch.com/poster/245543065/s718/sweet-and-sour.jpg" },
-            { id: 9, title: "Miss Peregrine's Home for Peculiar Children" type: "Movie", img: "https://m.media-amazon.com/images/M/MV5BMTU0Nzc5NzI5NV5BMl5BanBnXkFtZTgwNTk1MDE4MDI@._V1_FMjpg_UX1000_.jpg" },
-            { id: 10, title: "Accidental Love", type: "Manhwa/Korean Comic", img: "https://n16.mbeaj.org/media/mbch/e41/671201c5731fc2a1bc98d14e/66194575_864_886_188712.webp" }
-        
+            { id: 9, title: "Miss Peregrine's Home", type: "Movie", img: "https://m.media-amazon.com/images/M/MV5BMTU0Nzc5NzI5NV5BMl5BanBnXkFtZTgwNTk1MDE4MDI@._V1_FMjpg_UX1000_.jpg" },
+            { id: 10, title: "Accidental Love", type: "Manhwa", img: "https://n16.mbeaj.org/media/mbch/e41/671201c5731fc2a1bc98d14e/66194575_864_886_188712.webp" }
         ];
 
         const heroRotation = [
             { title: "Jujutsu Kaisen", desc: "The Shibuya Incident Arc is now streaming.", bg: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/0146b4f4-35b8-4932-bd80-47487768c621/dhb78z8-b53fa25a-8c8b-4746-912f-416b12f76cdf.jpg/v1/fill/w_1280,h_720,q_75,strp/jujutsu_kaisen_anime_live_wallpaper__video__by_shelloux_dhb78z8-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzIwIiwicGF0aCI6Ii9mLzAxNDZiNGY0LTM1YjgtNDkzMi1iZDgwLTQ3NDg3NzY4YzYyMS9kaGI3OHo4LWI1M2ZhMjVhLThjOGItNDc0Ni05MTJmLTQxNmIxMmY3NmNkZi5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.aizBmGGTWeuUDLBDqruY4B4Zr3YultecofBg2vZDGgo" },
-            { title: "Chainsaw Man", desc: "Experience the dark masterpiece by Tatsuki Fujimoto.", bg: "https://wallpapercave.com/wp/wp13065938.jpg" }
-            
+            { title: "Chainsaw Man", desc: "Experience the dark masterpiece.", bg: "https://wallpapercave.com/wp/wp13065938.jpg" }
         ];
 
         let watchlist = [];
 
-        // 2. Initialize Grid
-        function initGrid() {
+        // Generate the Grid based on filtered or full data
+        function renderGrid(data) {
             const grid = document.getElementById('main-grid');
-            grid.innerHTML = contentData.map(item => `
+            grid.innerHTML = data.map(item => `
                 <div class="media-card">
-                    <button class="watchlist-btn" onclick="addToWatchlist(${item.id}, this)">♥</button>
+                    <button class="watchlist-btn ${watchlist.some(w => w.id === item.id) ? 'active' : ''}" onclick="addToWatchlist(${item.id}, this)">♥</button>
                     <img src="${item.img}" alt="${item.title}">
                     <div class="media-info">
                         <h4>${item.title}</h4>
@@ -146,7 +155,16 @@
             `).join('');
         }
 
-        // 3. Hero Rotator Logic
+        // Search Filter Logic
+        function filterGrid() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = contentData.filter(item => 
+                item.title.toLowerCase().includes(searchTerm) || 
+                item.type.toLowerCase().includes(searchTerm)
+            );
+            renderGrid(filteredData);
+        }
+
         let heroIdx = 0;
         function rotateHero() {
             const hero = heroRotation[heroIdx];
@@ -156,11 +174,9 @@
             heroIdx = (heroIdx + 1) % heroRotation.length;
         }
 
-        // 4. Watchlist Logic
         function addToWatchlist(id, btn) {
             const item = contentData.find(c => c.id === id);
             const index = watchlist.findIndex(w => w.id === id);
-
             if (index === -1) {
                 watchlist.push(item);
                 btn.classList.add('active');
@@ -168,38 +184,32 @@
                 watchlist.splice(index, 1);
                 btn.classList.remove('active');
             }
-            
             updateWatchlistUI();
         }
 
         function updateWatchlistUI() {
             document.getElementById('count').innerText = watchlist.length;
             const content = document.getElementById('watchlist-content');
-            
             if (watchlist.length === 0) {
                 content.innerHTML = '<p style="color: #64748b;">Your list is empty.</p>';
-                return;
-            }
-
-            content.innerHTML = watchlist.map(item => `
-                <div class="watchlist-item">
-                    <img src="${item.img}">
-                    <div>
-                        <h5 style="margin:0">${item.title}</h5>
-                        <small style="color:var(--primary)">${item.type}</small>
+            } else {
+                content.innerHTML = watchlist.map(item => `
+                    <div class="watchlist-item">
+                        <img src="${item.img}">
+                        <div><h5 style="margin:0">${item.title}</h5><small style="color:var(--primary)">${item.type}</small></div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
 
         function toggleWatchlist() {
             document.getElementById('watchlist-drawer').classList.toggle('open');
         }
 
-        // Start Scripts
-        initGrid();
+        // Initialize
+        renderGrid(contentData);
         rotateHero();
-        setInterval(rotateHero, 5000); // Rotate every 5 seconds
+        setInterval(rotateHero, 5000);
     </script>
 </body>
 </html>
